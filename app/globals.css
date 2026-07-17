@@ -1,0 +1,143 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* shadcn tokens */
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* App-specific design tokens */
+  --color-igf-bg: var(--igf-bg);
+  --color-igf-surface: var(--igf-surface);
+  --color-igf-surface-alt: var(--igf-surface-alt);
+  --color-igf-border: var(--igf-border);
+  --color-igf-ink: var(--igf-ink);
+  --color-igf-muted: var(--igf-muted);
+  --color-igf-cyan: var(--igf-cyan);
+  --color-igf-cyan-dim: var(--igf-cyan-dim);
+  --color-igf-amber: var(--igf-amber);
+  --color-igf-green: var(--igf-green);
+  --color-igf-red: var(--igf-red);
+
+  /* Fonts */
+  --font-sans: var(--font-ibm-sans), 'IBM Plex Sans', sans-serif;
+  --font-mono: var(--font-ibm-mono), 'IBM Plex Mono', monospace;
+  --font-display: var(--font-space), 'Space Grotesk', sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+
+  /* Design tokens */
+  --igf-bg: oklch(0.10 0.01 255);
+  --igf-surface: oklch(0.14 0.01 255);
+  --igf-surface-alt: oklch(0.18 0.015 255);
+  --igf-border: oklch(0.28 0.015 255);
+  --igf-ink: oklch(0.96 0 0);
+  --igf-muted: oklch(0.56 0.015 255);
+  --igf-cyan: oklch(0.78 0.14 200);
+  --igf-cyan-dim: oklch(0.35 0.07 200);
+  --igf-amber: oklch(0.80 0.15 70);
+  --igf-green: oklch(0.74 0.14 145);
+  --igf-red: oklch(0.66 0.20 25);
+
+  /* shadcn tokens (dark by default) */
+  --background: var(--igf-bg);
+  --foreground: var(--igf-ink);
+  --card: var(--igf-surface);
+  --card-foreground: var(--igf-ink);
+  --popover: var(--igf-surface);
+  --popover-foreground: var(--igf-ink);
+  --primary: var(--igf-cyan);
+  --primary-foreground: oklch(0.10 0.01 255);
+  --secondary: var(--igf-surface-alt);
+  --secondary-foreground: var(--igf-ink);
+  --muted: var(--igf-surface-alt);
+  --muted-foreground: var(--igf-muted);
+  --accent: var(--igf-cyan-dim);
+  --accent-foreground: var(--igf-cyan);
+  --destructive: var(--igf-red);
+  --border: var(--igf-border);
+  --input: var(--igf-border);
+  --ring: var(--igf-cyan);
+  --chart-1: var(--igf-cyan);
+  --chart-2: var(--igf-green);
+  --chart-3: var(--igf-amber);
+  --chart-4: var(--igf-red);
+  --chart-5: oklch(0.70 0.14 280);
+  --radius: 0.5rem;
+  --sidebar: var(--igf-surface);
+  --sidebar-foreground: var(--igf-ink);
+  --sidebar-primary: var(--igf-cyan);
+  --sidebar-primary-foreground: oklch(0.10 0.01 255);
+  --sidebar-accent: var(--igf-surface-alt);
+  --sidebar-accent-foreground: var(--igf-ink);
+  --sidebar-border: var(--igf-border);
+  --sidebar-ring: var(--igf-cyan);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display), sans-serif;
+  }
+  code, pre, kbd, samp {
+    font-family: var(--font-mono), monospace;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--igf-bg); }
+::-webkit-scrollbar-thumb { background: var(--igf-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--igf-muted); }
+
+/* Selection */
+::selection {
+  background: oklch(0.78 0.14 200 / 0.25);
+  color: var(--igf-ink);
+}
