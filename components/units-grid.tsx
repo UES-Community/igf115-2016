@@ -2,75 +2,73 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowRight, Code2, Layers, GitBranch, Binary, Zap, Network } from 'lucide-react'
+import { ArrowRight, Layers, Settings, Coffee, Server } from 'lucide-react'
 
 const UNITS = [
   {
     id: 'unidad-1',
     label: 'Unidad I',
-    title: 'Fundamentos de Programación',
-    icon: Code2,
-    href: '/unidades/fundamentos',
+    title: 'El Software y la Ingeniería del Software',
+    icon: Settings,
+    href: '/unidades/el-software',
     color: 'var(--igf-cyan)',
     colorDim: 'var(--igf-cyan-dim)',
-    topics: ['Variables y tipos de datos', 'Estructuras de control', 'Funciones y parámetros', 'Recursividad'],
-    complexity: 'O(1) — O(n)',
+    topics: [
+      'El software como producto y proceso',
+      'Características del software de calidad',
+      'Crisis del software e historia',
+      'Modelos de ciclo de vida del software'
+    ],
+    complexity: 'Fundamentos de IS',
   },
   {
     id: 'unidad-2',
     label: 'Unidad II',
-    title: 'Estructuras Lineales',
+    title: 'Arquitectura del Software',
     icon: Layers,
-    href: '/unidades/lineales',
+    href: '/unidades/arquitectura',
     color: 'var(--igf-green)',
     colorDim: 'oklch(0.25 0.07 145)',
-    topics: ['Arreglos y matrices', 'Pilas (Stack)', 'Colas (Queue)', 'Listas enlazadas'],
-    complexity: 'O(1) — O(n)',
+    topics: [
+      'Características de la arquitectura',
+      'Construcción de componentes',
+      'Patrones de diseño comunes',
+      'Estilos arquitectónicos'
+    ],
+    complexity: 'Arquitectura y Componentes',
   },
   {
     id: 'unidad-3',
     label: 'Unidad III',
-    title: 'Estructuras No Lineales',
-    icon: GitBranch,
-    href: '/unidades/no-lineales',
+    title: 'Programación Web en Java',
+    icon: Coffee,
+    href: '/unidades/prog-web-java',
     color: 'var(--igf-amber)',
     colorDim: 'oklch(0.27 0.07 70)',
-    topics: ['Árboles binarios de búsqueda', 'Árboles AVL', 'Montículos (Heap)', 'Tries / Prefijos'],
-    complexity: 'O(log n)',
+    topics: [
+      'Arquitecturas de programación',
+      'Arquitectura de aplicaciones web',
+      'Servlets y páginas JSP',
+      'Patrón MVC en Java'
+    ],
+    complexity: 'Arquitectura Web',
   },
   {
     id: 'unidad-4',
     label: 'Unidad IV',
-    title: 'Grafos',
-    icon: Network,
-    href: '/unidades/grafos',
+    title: 'Servidor de Aplicaciones',
+    icon: Server,
+    href: '/unidades/servidor-aplicaciones',
     color: 'oklch(0.70 0.14 280)',
     colorDim: 'oklch(0.22 0.07 280)',
-    topics: ['Representación (lista/matriz)', 'BFS y DFS', 'Dijkstra / Bellman-Ford', 'Árbol de expansión mínima'],
-    complexity: 'O(V + E)',
-  },
-  {
-    id: 'unidad-5',
-    label: 'Unidad V',
-    title: 'Algoritmos de Ordenamiento',
-    icon: Binary,
-    href: '/unidades/ordenamiento',
-    color: 'var(--igf-red)',
-    colorDim: 'oklch(0.22 0.08 25)',
-    topics: ['Bubble & Insertion Sort', 'Merge Sort', 'Quick Sort', 'Heap Sort & Counting Sort'],
-    complexity: 'O(n log n)',
-  },
-  {
-    id: 'unidad-6',
-    label: 'Unidad VI',
-    title: 'Complejidad y Optimización',
-    icon: Zap,
-    href: '/unidades/complejidad',
-    color: 'oklch(0.78 0.13 320)',
-    colorDim: 'oklch(0.22 0.06 320)',
-    topics: ['Notación Big-O, Ω, Θ', 'Algoritmos voraces (Greedy)', 'Programación dinámica', 'Divide y vencerás'],
-    complexity: 'Análisis asintótico',
-  },
+    topics: [
+      'Conceptos de servidor web',
+      'Servidor de aplicaciones Tomcat',
+      'Configuración de Tomcat',
+      'Despliegue de aplicaciones'
+    ],
+    complexity: 'Tomcat y Despliegue',
+  }
 ]
 
 const cardVariants = {
@@ -78,7 +76,7 @@ const cardVariants = {
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.45, delay: i * 0.08, ease: 'easeOut' },
+    transition: { duration: 0.45, delay: i * 0.08, ease: 'easeOut' as const },
   }),
 }
 
@@ -96,7 +94,7 @@ export default function UnitsGrid() {
               id="units-heading"
               className="font-display text-3xl font-700 text-[var(--igf-ink)] tracking-tight md:text-4xl"
             >
-              6 Unidades Temáticas
+              4 Unidades Temáticas
             </h2>
           </div>
           <p className="text-sm text-[var(--igf-muted)] max-w-sm leading-relaxed">

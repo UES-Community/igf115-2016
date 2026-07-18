@@ -1,11 +1,11 @@
 import React from 'react'
 import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
-import Link from '@/components/link' // Wait, does @/components/link exist? No, Next.js Link is imported from 'next/link'
 import NextLink from 'next/link'
-import { ArrowLeft, BookOpen, Clock, Activity, Code2, Layers, GitBranch, Binary, Zap, Network } from 'lucide-react'
+import { ArrowLeft, BookOpen, Clock, Activity, Settings, Layers, Coffee, Server } from 'lucide-react'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github-dark.css'
+import QuizUnit, { Question } from '@/components/quiz-unit'
 
 interface UnitDetail {
   title: string
@@ -19,236 +19,203 @@ interface UnitDetail {
   codeTitle: string
   codeLang: string
   code: string
+  quizQuestions?: Question[]
 }
 
 const UNIT_DATA: Record<string, UnitDetail> = {
-  fundamentos: {
+  'el-software': {
     label: 'Unidad I',
-    title: 'Fundamentos de Programación',
-    subtitle: 'Conceptos clave, recursividad y control de flujo.',
-    description: 'En esta unidad se sientan las bases teóricas de la programación estructurada y funcional, con especial énfasis en el concepto de recursión, que es fundamental para el diseño posterior de estructuras de datos no lineales.',
-    icon: Code2,
-    complexity: 'O(1) — O(n)',
+    title: 'El Software y la Ingeniería del Software',
+    subtitle: 'Características del software como producto y como proceso.',
+    description: 'En esta unidad se sientan las bases conceptuales de la ingeniería del software. Se analiza el software no solo como un programa ejecutable, sino como un producto completo que incluye documentación, configuración de datos y procedimientos. Se explican los modelos clásicos de ciclo de vida del software, tales como el modelo en cascada, el incremental y el espiral, y se aborda el origen histórico de la disciplina debido a la denominada "crisis del software".',
+    icon: Settings,
+    complexity: 'Fundamentos de IS',
     duration: '2 Semanas',
     topics: [
-      'Variables, constantes y tipos de datos primitivos.',
-      'Estructuras de control selectivas (if, switch) y repetitivas (for, while).',
-      'Funciones: paso de parámetros por valor y por referencia.',
-      'Recursividad simple y recursividad mutua o cruzada.',
-      'Análisis de la pila de llamadas (Call Stack) en procesos recursivos.'
+      'El software visto como producto frente a proceso de desarrollo.',
+      'Características fundamentales del software: fiabilidad, mantenibilidad, eficiencia y facilidad de uso.',
+      'Crisis del software: orígenes históricos y necesidad de un enfoque de ingeniería.',
+      'Modelos clásicos de ciclo de vida del software (Cascada, Incremental, Espiral).',
+      'Introducción a la garantía de calidad y métricas de software.'
     ],
-    codeTitle: 'Ejemplo: Fibonacci Recursivo vs Iterativo (C++)',
-    codeLang: 'cpp',
-    code: `// Cálculo recursivo de la serie de Fibonacci con análisis de llamadas
-#include <iostream>
+    codeTitle: 'Ejemplo: Índice de Mantenibilidad (Python)',
+    codeLang: 'python',
+    code: `# Cálculo del Índice de Mantenibilidad (MI) simplificado
+# MI = 171 - 5.2 * ln(HV) - 0.23 * CC - 16.2 * ln(LOC)
+import math
 
-int fibonacci(int n) {
-    if (n <= 1) {
-        return n; // Caso base
-    }
-    // Llamada recursiva doble
-    return fibonacci(n - 1) + fibonacci(n - 2);
-}
+def maintainability_index(halstead_volume, cyclomatic_complexity, loc):
+    mi = 171 - 5.2 * math.log(halstead_volume) - 0.23 * cyclomatic_complexity - 16.2 * math.log(loc)
+    # Escalar el resultado entre 0 y 100
+    return round(max(0, min(100, mi)), 2)
 
-int main() {
-    int n = 6;
-    std::cout << "Fibonacci de " << n << " es: " << fibonacci(n) << std::endl;
-    return 0;
-}`
-  },
-  lineales: {
-    label: 'Unidad II',
-    title: 'Estructuras de Datos Lineales',
-    subtitle: 'Pilas, colas y listas enlazadas en memoria.',
-    description: 'Estudio de las estructuras donde los elementos se organizan de forma secuencial, uno detrás de otro. Se analiza la diferencia entre la representación estática (arreglos) y dinámica (nodos enlazados).',
-    icon: Layers,
-    complexity: 'O(1) — O(n)',
-    duration: '3 Semanas',
-    topics: [
-      'Arreglos y matrices: Direccionamiento físico en memoria.',
-      'Pilas (Stacks): Operaciones Push, Pop, Peek (LIFO).',
-      'Colas (Queues): Operaciones Enqueue, Dequeue (FIFO).',
-      'Colas circulares y colas de prioridad.',
-      'Listas enlazadas simples, dobles y circulares.'
-    ],
-    codeTitle: 'Ejemplo: Implementación de un Nodo para Lista Simple (JavaScript)',
-    codeLang: 'javascript',
-    code: `// Nodo de una lista enlazada
-class Nodo {
-  constructor(valor) {
-    this.valor = valor;
-    this.siguiente = null; // Enlace al siguiente nodo
-  }
-}
-
-class ListaEnlazada {
-  constructor() {
-    this.cabeza = null;
-  }
-
-  insertarAlInicio(valor) {
-    const nuevo = new Nodo(valor);
-    nuevo.siguiente = this.cabeza;
-    this.cabeza = nuevo;
-  }
-}`
-  },
-  'no-lineales': {
-    label: 'Unidad III',
-    title: 'Estructuras de Datos No Lineales',
-    subtitle: 'Árboles binarios, AVL y organización jerárquica.',
-    description: 'Estudio de las estructuras de datos con relaciones jerárquicas o ramificadas. Se hace foco en los árboles binarios de búsqueda y los mecanismos de balanceo para garantizar búsquedas en tiempo logarítmico.',
-    icon: GitBranch,
-    complexity: 'O(log n) — O(n)',
-    duration: '3 Semanas',
-    topics: [
-      'Árboles generales y terminología (raíz, hojas, altura, nivel).',
-      'Árboles Binarios de Búsqueda (BST): Inserción, eliminación y búsquedas.',
-      'Recorridos de árboles: Preorden, Inorden y Postorden.',
-      'Árboles balanceados: Árboles AVL (Rotaciones simples y dobles).',
-      'Montículos (Heaps) y Tries (Árboles de prefijos).'
-    ],
-    codeTitle: 'Ejemplo: Inserción en un Árbol Binario de Búsqueda (C++)',
-    codeLang: 'cpp',
-    code: `struct Nodo {
-    int dato;
-    Nodo* izquierdo;
-    Nodo* derecho;
-    Nodo(int val) : dato(val), izquierdo(nullptr), derecho(nullptr) {}
-};
-
-Nodo* insertar(Nodo* raiz, int dato) {
-    if (raiz == nullptr) {
-        return new Nodo(dato);
-    }
-    if (dato < raiz->dato) {
-        raiz->izquierdo = insertar(raiz->izquierdo, dato);
-    } else {
-        raiz->derecho = insertar(raiz->derecho, dato);
-    }
-    return raiz;
-}`
-  },
-  grafos: {
-    label: 'Unidad IV',
-    title: 'Grafos y Algoritmos de Redes',
-    subtitle: 'Representación de relaciones y caminos óptimos.',
-    description: 'Modelado de sistemas complejos y redes mediante vértices y aristas. Se analizan las diferentes representaciones en memoria y los algoritmos fundamentales de exploración y optimización de rutas.',
-    icon: Network,
-    complexity: 'O(V + E) — O(V²)',
-    duration: '3 Semanas',
-    topics: [
-      'Conceptos fundamentales: Vértices, aristas, grafos dirigidos y no dirigidos.',
-      'Representación: Matriz de adyacencia y Lista de adyacencia.',
-      'Exploración de grafos: Búsqueda en Anchura (BFS) y en Profundidad (DFS).',
-      'Algoritmos de caminos mínimos: Dijkstra, Bellman-Ford y Floyd-Warshall.',
-      'Árbol de Expansión Mínima (MST): Algoritmos de Prim y Kruskal.'
-    ],
-    codeTitle: 'Ejemplo: Exploración BFS usando Lista de Adyacencia (JavaScript)',
-    codeLang: 'javascript',
-    code: `// Búsqueda en Anchura (BFS) para un Grafo
-function bfs(grafo, nodoInicio) {
-  const visitados = new Set();
-  const cola = [nodoInicio];
-  visitados.add(nodoInicio);
-
-  while (cola.length > 0) {
-    const actual = cola.shift();
-    console.log("Visitando nodo:", actual);
-
-    for (const vecino of grafo[actual]) {
-      if (!visitados.has(vecino)) {
-        visitados.add(vecino);
-        cola.push(vecino);
+# Ejemplo de uso: módulo con 500 volumen Halstead, complejidad 10 y 200 líneas de código
+mi = maintainability_index(500, 10, 200)
+print(f"Índice de Mantenibilidad: {mi}")
+print(f"Calidad del código: {'Alta' if mi > 65 else 'Aceptable' if mi > 20 else 'Crítica'}")`,
+    quizQuestions: [
+      {
+        id: 1,
+        question: "¿Cuál es una característica que distingue al software de otros productos de ingeniería tradicionales como la construcción de un puente?",
+        options: [
+          "El software se desgasta físicamente con el uso debido al paso del tiempo.",
+          "El software se desarrolla o se maqueta, no se manufactura en el sentido clásico.",
+          "El software es inmune a los cambios en su entorno operativo.",
+          "El software requiere materiales físicos de alta calidad para su correcto funcionamiento."
+        ],
+        answerIndex: 1,
+        explanation: "El software no se desgasta por causas físicas directas sino que se deteriora a medida que sufre modificaciones (entropía de software). Además, se desarrolla de forma lógica y no se fabrica físicamente."
+      },
+      {
+        id: 2,
+        question: "¿Qué originó la denominada 'Crisis del Software' a finales de la década de 1960?",
+        options: [
+          "La falta de computadoras personales en el mercado doméstico.",
+          "Un aumento súbito en el costo de los componentes de hardware.",
+          "Proyectos que superaban presupuestos, plazos de entrega y producían software poco fiable.",
+          "La prohibición gubernamental del desarrollo de sistemas operativos propietarios."
+        ],
+        answerIndex: 2,
+        explanation: "La crisis del software ocurrió porque la potencia del hardware aumentó rápidamente pero las técnicas de programación no avanzaron al mismo ritmo, lo que causó proyectos fuera de presupuesto, retrasados e inestables."
+      },
+      {
+        id: 3,
+        question: "En el Modelo en Cascada (Waterfall), ¿cuándo se inicia una fase de desarrollo?",
+        options: [
+          "Simultáneamente con las demás fases para agilizar la entrega.",
+          "Solo cuando la fase previa ha sido completada y validada.",
+          "En cualquier momento, dependiendo de la disponibilidad del equipo.",
+          "Después de haber desplegado una versión parcial utilizable por el cliente."
+        ],
+        answerIndex: 1,
+        explanation: "El modelo en cascada es secuencial y lineal. Cada fase (requisitos, diseño, codificación, etc.) debe completarse y documentarse antes de avanzar a la siguiente."
+      },
+      {
+        id: 4,
+        question: "¿Cuál de los siguientes es un atributo de calidad interna del software según la ingeniería del software?",
+        options: [
+          "Precio de venta en el mercado de distribución.",
+          "Facilidad de mantenimiento (Mantenibilidad).",
+          "Número de usuarios simultáneos en la versión beta.",
+          "El color predominante de la interfaz de usuario."
+        ],
+        answerIndex: 1,
+        explanation: "La mantenibilidad es un atributo clave de calidad interna del software que indica la facilidad con la que el código puede ser modificado para corregir fallos, mejorar rendimiento o adaptarse a cambios."
+      },
+      {
+        id: 5,
+        question: "¿Qué representa el Índice de Mantenibilidad (Maintainability Index) en la calidad del software?",
+        options: [
+          "El tiempo exacto en horas que tomará corregir un error en producción.",
+          "Una métrica compuesta (usualmente de 0 a 100) que estima qué tan fácil es modificar y mantener el código base.",
+          "El número total de desarrolladores que han editado el archivo.",
+          "El porcentaje de cobertura de pruebas unitarias que tiene el sistema."
+        ],
+        answerIndex: 1,
+        explanation: "El Índice de Mantenibilidad es un valor numérico derivado de otras métricas (Líneas de Código, Complejidad Ciclomática y volumen Halstead) que ayuda a evaluar de forma rápida la mantenibilidad de un archivo o proyecto."
       }
+    ]
+  },
+  'arquitectura': {
+    label: 'Unidad II',
+    title: 'Arquitectura del Software',
+    subtitle: 'Características de la arquitectura, construcción de componentes y utilización de patrones.',
+    description: 'Se analizan los principios fundamentales del diseño arquitectónico del software. Los estudiantes aprenden a descomponer sistemas complejos en componentes con alta cohesión y bajo acoplamiento. Se introducen estilos y patrones arquitectónicos comunes, como la arquitectura en capas, microservicios y MVC, que guían la organización global de un sistema de información.',
+    icon: Layers,
+    complexity: 'Arquitectura y Componentes',
+    duration: '3 Semanas',
+    topics: [
+      'Principios de la arquitectura de software y su rol en el ciclo de vida.',
+      'Acoplamiento y cohesión en la construcción de componentes.',
+      'Patrones de diseño de software (Creacionales, Estructurales y de Comportamiento).',
+      'Estilos arquitectónicos modernos frente a tradicionales.'
+    ],
+    codeTitle: 'Ejemplo: Patrón Singleton (Java)',
+    codeLang: 'java',
+    code: `public class DatabaseConnection {
+    private static DatabaseConnection instance;
+
+    private DatabaseConnection() {
+        // Constructor privado para evitar instanciación externa
     }
-  }
+
+    public static synchronized DatabaseConnection getInstance() {
+        if (instance == null) {
+            instance = new DatabaseConnection();
+        }
+        return instance;
+    }
 }`
   },
-  ordenamiento: {
-    label: 'Unidad V',
-    title: 'Algoritmos de Ordenamiento',
-    subtitle: 'Métodos iterativos, recursivos y ordenamientos lineales.',
-    description: 'Clasificación y análisis de algoritmos para ordenar colecciones de datos. Se estudian comparativamente métodos sencillos frente a métodos avanzados de tipo "divide y vencerás".',
-    icon: Binary,
-    complexity: 'O(n log n) — O(n²)',
-    duration: '2 Semanas',
+  'prog-web-java': {
+    label: 'Unidad III',
+    title: 'Programación Web en Java',
+    subtitle: 'Diferentes arquitecturas para la programación y arquitectura de aplicaciones Web.',
+    description: 'Esta unidad introduce la infraestructura y patrones necesarios para construir aplicaciones web empresariales. Se examinan las tecnologías clave de la plataforma Java (Servlets, JSP, filtros) y cómo encajan en una arquitectura de tres capas usando el patrón Model-View-Controller (MVC) para separar la interfaz de usuario, la lógica de negocios y la persistencia de datos.',
+    icon: Coffee,
+    complexity: 'Arquitectura Web',
+    duration: '3 Semanas',
     topics: [
-      'Ordenamientos simples: Burbuja (Bubble), Inserción (Insertion) y Selección (Selection).',
-      'Ordenamiento rápido (Quick Sort): Selección de pivote y particionamiento.',
-      'Ordenamiento por mezcla (Merge Sort): Fusión recursiva.',
-      'Ordenamiento por montículos (Heap Sort).',
-      'Algoritmos no comparativos: Counting Sort, Radix Sort.'
+      'Arquitecturas cliente-servidor y arquitectura web de múltiples capas.',
+      'Protocolo HTTP: peticiones, respuestas y ciclo de vida de la solicitud.',
+      'Java Servlets: manejo de peticiones GET/POST y control de sesiones.',
+      'JavaServer Pages (JSP) y plantillas para la capa de presentación.',
+      'Implementación del patrón Modelo-Vista-Controlador (MVC).'
     ],
-    codeTitle: 'Ejemplo: Partición y Quick Sort (C++)',
-    codeLang: 'cpp',
-    code: `void swap(int& a, int& b) {
-    int temp = a;
-    a = b;
-    b = temp;
-}
+    codeTitle: 'Ejemplo: Servlet Controlador en MVC (Java)',
+    codeLang: 'java',
+    code: `import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-int particion(int arr[], int bajo, int alto) {
-    int pivote = arr[alto];
-    int i = (bajo - 1);
-    for (int j = bajo; j <= alto - 1; j++) {
-        if (arr[j] < pivote) {
-            i++;
-            swap(arr[i], arr[j]);
+@WebServlet("/controlador")
+public class ControllerServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+        if ("listar".equals(action)) {
+            // Lógica de modelo
+            request.setAttribute("mensaje", "Lista de productos");
+            request.getRequestDispatcher("/productos.jsp").forward(request, response);
         }
     }
-    swap(arr[i + 1], arr[alto]);
-    return (i + 1);
-}
-
-void quickSort(int arr[], int bajo, int alto) {
-    if (bajo < alto) {
-        int pi = particion(arr, bajo, alto);
-        quickSort(arr, bajo, pi - 1);
-        quickSort(arr, pi + 1, alto);
-    }
 }`
   },
-  complejidad: {
-    label: 'Unidad VI',
-    title: 'Análisis de Complejidad y Optimización',
-    subtitle: 'Notación Big-O, algoritmos Greedy y programación dinámica.',
-    description: 'Formalización del análisis asintótico de algoritmos para estimar su consumo de tiempo y memoria. Introducción a estrategias de diseño algorítmico avanzadas.',
-    icon: Zap,
-    complexity: 'Análisis Asintótico',
-    duration: '2 Semanas',
+  'servidor-aplicaciones': {
+    label: 'Unidad IV',
+    title: 'Servidor de Aplicaciones',
+    subtitle: 'Qué es un servidor web y cómo configurar el servidor de aplicaciones Tomcat.',
+    description: 'Los estudiantes aprenderán el funcionamiento de los servidores web y servidores de aplicaciones web. Se detalla el proceso de instalación, configuración y administración del contenedor de servlets Apache Tomcat, incluyendo la estructura de directorios de una aplicación web Java (.war) y la gestión del puerto de escucha y recursos.',
+    icon: Server,
+    complexity: 'Tomcat y Despliegue',
+    duration: '3 Semanas',
     topics: [
-      'Análisis de algoritmos: Tiempo de ejecución en el mejor, peor y promedio caso.',
-      'Notación Big-O (asintótica superior), Omega (Ω) y Theta (Θ).',
-      'Resolución de recurrencias matemáticas (Teorema Maestro).',
-      'Técnicas de diseño: Algoritmos Voraces (Greedy).',
-      'Programación Dinámica: Memoización y Tabulación.'
+      'Diferencias entre servidor web y servidor de aplicaciones.',
+      'Arquitectura interna de Apache Tomcat y el archivo server.xml.',
+      'Configuración de variables de entorno (JAVA_HOME, CATALINA_HOME).',
+      'Estructura del directorio WEB-INF y despliegue de archivos WAR.'
     ],
-    codeTitle: 'Ejemplo: Memoización en Fibonacci (JavaScript)',
-    codeLang: 'javascript',
-    code: `// Cálculo de Fibonacci optimizado con Memoización (O(n) tiempo, O(n) espacio)
-const memo = {};
-
-function fibonacciMemo(n) {
-  if (n <= 1) return n;
-  if (n in memo) return memo[n];
-  
-  memo[n] = fibonacciMemo(n - 1) + fibonacciMemo(n - 2);
-  return memo[n];
-}
-
-console.log("Fibonacci de 50:", fibonacciMemo(50));`
+    codeTitle: 'Ejemplo: Configuración Básica de Puerto en server.xml (XML)',
+    codeLang: 'xml',
+    code: `<!-- Configuración del puerto HTTP en Tomcat (conf/server.xml) -->
+<Connector port="8080" 
+           protocol="HTTP/1.1"
+           connectionTimeout="20000"
+           redirectPort="8443" 
+           maxThreads="150"
+           URIEncoding="UTF-8" />`
   }
 }
 
 export function generateStaticParams() {
   return [
-    { slug: 'fundamentos' },
-    { slug: 'lineales' },
-    { slug: 'no-lineales' },
-    { slug: 'grafos' },
-    { slug: 'ordenamiento' },
-    { slug: 'complejidad' }
+    { slug: 'el-software' },
+    { slug: 'arquitectura' },
+    { slug: 'prog-web-java' },
+    { slug: 'servidor-aplicaciones' }
   ]
 }
 
@@ -333,8 +300,8 @@ export default async function UnitPage({ params }: { params: Promise<{ slug: str
           <div className="rounded-xl border border-[var(--igf-border)] bg-[var(--igf-surface)] p-4 flex items-center gap-3">
             <Clock size={16} className="text-[var(--igf-cyan)]" />
             <div className="text-left">
-              <p className="text-[10px] font-mono text-[var(--igf-muted)] uppercase tracking-wider">Visualizaciones</p>
-              <p className="text-xs font-sans font-600 text-gray-200">Disponibles en el visualizador</p>
+              <p className="text-[10px] font-mono text-[var(--igf-muted)] uppercase tracking-wider">Autoevaluación</p>
+              <p className="text-xs font-sans font-600 text-gray-200">Disponible en sección inferior</p>
             </div>
           </div>
         </div>
@@ -377,6 +344,13 @@ export default async function UnitPage({ params }: { params: Promise<{ slug: str
             </div>
           </div>
         </div>
+
+        {/* Quiz Section */}
+        {unit.quizQuestions && unit.quizQuestions.length > 0 && (
+          <div className="mt-4">
+            <QuizUnit questions={unit.quizQuestions} unitLabel={unit.label} />
+          </div>
+        )}
       </main>
 
       <Footer />

@@ -3,12 +3,10 @@ import { BookOpen, Code2, GitBranch } from 'lucide-react'
 
 const LINKS = {
   unidades: [
-    { label: 'Fundamentos de Programación', href: '/unidades/fundamentos' },
-    { label: 'Estructuras Lineales', href: '/unidades/lineales' },
-    { label: 'Estructuras No Lineales', href: '/unidades/no-lineales' },
-    { label: 'Grafos', href: '/unidades/grafos' },
-    { label: 'Ordenamiento', href: '/unidades/ordenamiento' },
-    { label: 'Complejidad', href: '/unidades/complejidad' },
+    { label: 'El Software y la Ingeniería', href: '/unidades/el-software' },
+    { label: 'Arquitectura del Software', href: '/unidades/arquitectura' },
+    { label: 'Programación Web en Java', href: '/unidades/prog-web-java' },
+    { label: 'Servidor de Aplicaciones', href: '/unidades/servidor-aplicaciones' },
   ],
   herramientas: [
     { label: 'Editor de Código', href: '/editor' },
@@ -37,8 +35,8 @@ export default function Footer() {
               </div>
             </Link>
             <p className="text-sm leading-relaxed text-[var(--igf-muted)] max-w-xs">
-              Plataforma educativa para la materia Ingeniería del Software. Estructuras de datos,
-              algoritmos y programación con visualizaciones interactivas.
+              Plataforma educativa para la materia Ingeniería del Software. Contenido didáctico,
+              código y autoevaluaciones interactivas.
             </p>
             <div className="mt-5 flex items-center gap-3">
               <div className="flex items-center gap-1.5 rounded-full border border-[var(--igf-border)] px-3 py-1.5">

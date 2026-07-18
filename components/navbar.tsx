@@ -3,56 +3,40 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Code2, Menu, X, ChevronDown, BookOpen, Layers, GitBranch, Binary, Zap, Network } from 'lucide-react'
+import { Code2, Menu, X, ChevronDown, BookOpen, Layers, Settings, Coffee, Server } from 'lucide-react'
 
 const UNITS = [
   {
     id: 'unidad-1',
     label: 'Unidad I',
-    title: 'Fundamentos de Programación',
-    icon: Code2,
-    href: '/unidades/fundamentos',
-    topics: ['Variables y tipos', 'Control de flujo', 'Funciones', 'Recursividad'],
+    title: 'El Software y la Ingeniería del Software',
+    icon: Settings,
+    href: '/unidades/el-software',
+    topics: ['Producto vs Proceso', 'Características de calidad', 'Crisis del software', 'Ciclos de vida'],
   },
   {
     id: 'unidad-2',
     label: 'Unidad II',
-    title: 'Estructuras Lineales',
+    title: 'Arquitectura del Software',
     icon: Layers,
-    href: '/unidades/lineales',
-    topics: ['Arreglos', 'Pilas (Stack)', 'Colas (Queue)', 'Listas enlazadas'],
+    href: '/unidades/arquitectura',
+    topics: ['Principios e importancia', 'Componentes', 'Patrones de diseño', 'Estilos arquitectónicos'],
   },
   {
     id: 'unidad-3',
     label: 'Unidad III',
-    title: 'Estructuras No Lineales',
-    icon: GitBranch,
-    href: '/unidades/no-lineales',
-    topics: ['Árboles binarios', 'AVL', 'Montículos (Heap)', 'Tries'],
+    title: 'Programación Web en Java',
+    icon: Coffee,
+    href: '/unidades/prog-web-java',
+    topics: ['Arquitecturas cliente-servidor', 'Servlets y JSP', 'Ciclo de petición/respuesta', 'MVC en Java'],
   },
   {
     id: 'unidad-4',
     label: 'Unidad IV',
-    title: 'Grafos',
-    icon: Network,
-    href: '/unidades/grafos',
-    topics: ['Representación', 'BFS / DFS', 'Caminos mínimos', 'MST'],
-  },
-  {
-    id: 'unidad-5',
-    label: 'Unidad V',
-    title: 'Algoritmos de Ordenamiento',
-    icon: Binary,
-    href: '/unidades/ordenamiento',
-    topics: ['Bubble Sort', 'Merge Sort', 'Quick Sort', 'Heap Sort'],
-  },
-  {
-    id: 'unidad-6',
-    label: 'Unidad VI',
-    title: 'Complejidad y Optimización',
-    icon: Zap,
-    href: '/unidades/complejidad',
-    topics: ['Notación Big-O', 'Algoritmos voraces', 'Programación dinámica', 'Divide y vencerás'],
+    title: 'Servidor de Aplicaciones',
+    icon: Server,
+    href: '/unidades/servidor-aplicaciones',
+    topics: ['Servidor web vs de aplicaciones', 'Instalación y Configuración', 'Tomcat server.xml', 'Despliegue WAR'],
   },
 ]
 

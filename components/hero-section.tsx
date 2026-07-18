@@ -4,18 +4,15 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight, Play, Code2 } from 'lucide-react'
 
-const CODE_SNIPPET = `// Búsqueda binaria — O(log n)
-function binarySearch(arr: number[], target: number): number {
-  let left = 0
-  let right = arr.length - 1
+const CODE_SNIPPET = `// Ciclo de vida del software (Cascada)
+const phases = ["Requisitos", "Diseño", "Codificación", "Pruebas", "Despliegue"];
 
-  while (left <= right) {
-    const mid = Math.floor((left + right) / 2)
-    if (arr[mid] === target) return mid
-    if (arr[mid] < target) left = mid + 1
-    else right = mid - 1
+function getNextPhase(currentPhase: string): string {
+  const index = phases.indexOf(currentPhase);
+  if (index !== -1 && index < phases.length - 1) {
+    return phases[index + 1];
   }
-  return -1
+  return "Mantenimiento";
 }`
 
 const TOKEN_COLORS: Record<string, string> = {
@@ -71,9 +68,9 @@ function tokenize(code: string) {
 }
 
 const STATS = [
-  { value: '6', label: 'Unidades temáticas' },
-  { value: '24+', label: 'Algoritmos cubiertos' },
-  { value: 'O(n)', label: 'Análisis de complejidad' },
+  { value: '4', label: 'Unidades temáticas' },
+  { value: 'ISO 25010', label: 'Estándar de calidad' },
+  { value: 'Tomcat', label: 'Servidor de aplicaciones' },
 ]
 
 export default function HeroSection() {
@@ -129,8 +126,7 @@ export default function HeroSection() {
             </h1>
 
             <p className="mt-5 text-base leading-relaxed text-[var(--igf-muted)] max-w-lg">
-              Domina estructuras de datos, algoritmos y análisis de complejidad con visualizaciones
-              interactivas paso a paso y un editor de código en el navegador.
+              Domina los fundamentos de la ingeniería del software, patrones de diseño, desarrollo web en Java y configuración de servidores con guías de estudio interactivas y autoevaluaciones.
             </p>
 
             {/* Stats */}
@@ -146,7 +142,7 @@ export default function HeroSection() {
             {/* CTA */}
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
-                href="/unidades/fundamentos"
+                href="/unidades/el-software"
                 className="inline-flex items-center gap-2 rounded-full bg-[var(--igf-cyan)] px-5 py-2.5 text-sm font-600 text-[var(--igf-bg)] transition-opacity hover:opacity-90"
               >
                 Comenzar <ArrowRight size={15} />
@@ -173,7 +169,7 @@ export default function HeroSection() {
                 <span className="h-3 w-3 rounded-full" style={{ background: '#ff5f57' }} />
                 <span className="h-3 w-3 rounded-full" style={{ background: '#ffbd2e' }} />
                 <span className="h-3 w-3 rounded-full" style={{ background: '#28c840' }} />
-                <span className="ml-3 font-mono text-xs text-[var(--igf-muted)]">binarySearch.ts</span>
+                <span className="ml-3 font-mono text-xs text-[var(--igf-muted)]">lifecycle.ts</span>
                 <div className="ml-auto flex items-center gap-1.5 text-[var(--igf-muted)]">
                   <Code2 size={12} />
                   <span className="font-mono text-xs">TypeScript</span>
@@ -200,9 +196,9 @@ export default function HeroSection() {
               </pre>
               {/* Complexity badge */}
               <div className="border-t border-[var(--igf-border)] px-5 py-3 flex items-center justify-between">
-                <span className="font-mono text-xs text-[var(--igf-muted)]">Complejidad temporal</span>
+                <span className="font-mono text-xs text-[var(--igf-muted)]">Enfoque de desarrollo</span>
                 <span className="rounded-full bg-[var(--igf-cyan-dim)] px-3 py-0.5 font-mono text-xs font-600 text-[var(--igf-cyan)]">
-                  O(log n)
+                  Ingeniería
                 </span>
               </div>
             </div>

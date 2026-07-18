@@ -27,22 +27,22 @@ const FEATURES = [
   },
   {
     icon: BarChart3,
-    title: 'Análisis de Complejidad',
+    title: 'Métricas de Software',
     description:
-      'Comprende la notación Big-O con gráficas comparativas. Visualiza cómo O(1), O(log n), O(n), O(n²) se comportan con diferentes tamaños de entrada.',
+      'Comprende el estándar de calidad ISO 25010 y métricas de software como el Índice de Mantenibilidad y la Complejidad Ciclomática.',
     color: 'var(--igf-amber)',
     colorDim: 'oklch(0.27 0.07 70)',
-    href: '/unidades/complejidad',
-    cta: 'Aprender Big-O',
+    href: '/unidades/el-software',
+    cta: 'Aprender Métricas',
   },
   {
     icon: BookOpen,
     title: 'Contenido Estructurado',
     description:
-      'Seis unidades progresivas desde fundamentos hasta optimización. Cada tema incluye teoría, pseudocódigo, implementación y casos de uso reales.',
+      'Cuatro unidades progresivas desde fundamentos de ingeniería de software hasta despliegue en Tomcat. Cada tema incluye teoría, código y autoevaluaciones.',
     color: 'oklch(0.70 0.14 280)',
     colorDim: 'oklch(0.22 0.07 280)',
-    href: '/unidades/fundamentos',
+    href: '/unidades/el-software',
     cta: 'Ver programa',
   },
 ]
@@ -54,7 +54,7 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' as const } },
 }
 
 export default function FeaturesSection() {
