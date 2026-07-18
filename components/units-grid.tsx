@@ -30,10 +30,10 @@ const UNITS = [
     color: 'var(--igf-green)',
     colorDim: 'oklch(0.25 0.07 145)',
     topics: [
-      'Características de la arquitectura',
-      'Construcción de componentes',
-      'Patrones de diseño comunes',
-      'Estilos arquitectónicos'
+      'Acoplamiento bajo y alta cohesión',
+      'Patrones GoF: Singleton, Observer, Factory',
+      'Estilos: Capas, Microservicios, Event-Driven',
+      'Principios SOLID aplicados al diseño'
     ],
     complexity: 'Arquitectura y Componentes',
   },
