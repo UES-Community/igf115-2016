@@ -6,6 +6,7 @@ import { ArrowLeft, BookOpen, Clock, Activity, Settings, Layers, Coffee, Server 
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github-dark.css'
 import QuizUnit, { Question } from '@/components/quiz-unit'
+import PatternVisualizer from '@/components/pattern-visualizer'
 
 interface UnitDetail {
   title: string
@@ -20,6 +21,8 @@ interface UnitDetail {
   codeLang: string
   code: string
   quizQuestions?: Question[]
+  /** Optional interactive visualizer rendered below the code block */
+  visualizerComponent?: React.ComponentType
 }
 
 const UNIT_DATA: Record<string, UnitDetail> = {
@@ -120,32 +123,143 @@ print(f"Calidad del código: {'Alta' if mi > 65 else 'Aceptable' if mi > 20 else
     label: 'Unidad II',
     title: 'Arquitectura del Software',
     subtitle: 'Características de la arquitectura, construcción de componentes y utilización de patrones.',
-    description: 'Se analizan los principios fundamentales del diseño arquitectónico del software. Los estudiantes aprenden a descomponer sistemas complejos en componentes con alta cohesión y bajo acoplamiento. Se introducen estilos y patrones arquitectónicos comunes, como la arquitectura en capas, microservicios y MVC, que guían la organización global de un sistema de información.',
+    description: `La arquitectura del software es la estructura de alto nivel de un sistema: define los componentes que lo forman, sus responsabilidades y las relaciones entre ellos. Una arquitectura bien diseñada reduce el costo de mantenimiento, facilita la escalabilidad y guía al equipo de desarrollo durante todo el ciclo de vida del proyecto.
+
+Dos conceptos clave para evaluar la calidad estructural son el acoplamiento (grado de dependencia entre módulos) y la cohesión (grado en que los elementos de un módulo pertenecen lógicamente juntos). El objetivo es maximizar la cohesión interna de cada componente y minimizar el acoplamiento entre ellos, favoreciendo sistemas más robustos y fáciles de probar.
+
+Los patrones de diseño GoF (Gang of Four) son soluciones reutilizables a problemas frecuentes de diseño orientado a objetos. Se clasifican en Creacionales (cómo crear objetos), Estructurales (cómo componer clases) y de Comportamiento (cómo interactúan los objetos). Ejemplos destacados son Singleton, Factory Method, Observer, Decorator y Strategy.
+
+En cuanto a estilos arquitectónicos, la arquitectura en capas (presentación, lógica, datos) sigue siendo el estándar en aplicaciones empresariales Java EE. Los microservicios descomponen el sistema en servicios autónomos que se comunican a través de APIs, mejorando la escalabilidad independiente. La arquitectura basada en eventos (event-driven) utiliza productores y consumidores de mensajes desacoplados, ideal para sistemas de alta concurrencia.`,
     icon: Layers,
     complexity: 'Arquitectura y Componentes',
     duration: '3 Semanas',
     topics: [
-      'Principios de la arquitectura de software y su rol en el ciclo de vida.',
-      'Acoplamiento y cohesión en la construcción de componentes.',
-      'Patrones de diseño de software (Creacionales, Estructurales y de Comportamiento).',
-      'Estilos arquitectónicos modernos frente a tradicionales.'
+      'Principios de la arquitectura de software: rol, atributos de calidad y decisiones de diseño.',
+      'Acoplamiento bajo y alta cohesión: métricas y estrategias de refactorización.',
+      'Patrones GoF — Creacionales: Singleton, Factory Method, Abstract Factory, Builder.',
+      'Patrones GoF — Estructurales y de Comportamiento: Decorator, Adapter, Observer, Strategy.',
+      'Estilos arquitectónicos: Capas, Microservicios, Event-Driven y arquitectura hexagonal.',
+      'Principios SOLID y su relación con la mantenibilidad y testabilidad del software.'
     ],
-    codeTitle: 'Ejemplo: Patrón Singleton (Java)',
+    codeTitle: 'Ejemplos: Patrón Singleton y Patrón Observer (Java)',
     codeLang: 'java',
-    code: `public class DatabaseConnection {
-    private static DatabaseConnection instance;
+    code: `// ── PATRÓN SINGLETON (Creacional) ──────────────────────────────────
+// Garantiza una única instancia global de la clase.
+public class DatabaseConnection {
+    private static volatile DatabaseConnection instance;
 
     private DatabaseConnection() {
-        // Constructor privado para evitar instanciación externa
+        // Constructor privado: impide la creación externa
     }
 
-    public static synchronized DatabaseConnection getInstance() {
+    // Thread-safe con doble verificación de bloqueo
+    public static DatabaseConnection getInstance() {
         if (instance == null) {
-            instance = new DatabaseConnection();
+            synchronized (DatabaseConnection.class) {
+                if (instance == null) {
+                    instance = new DatabaseConnection();
+                }
+            }
         }
         return instance;
     }
-}`
+}
+
+// ── PATRÓN OBSERVER (Comportamiento) ───────────────────────────────
+// Define dependencia uno-a-muchos; los observadores son notificados
+// automáticamente cuando el sujeto cambia de estado.
+import java.util.ArrayList;
+import java.util.List;
+
+interface Observer {
+    void update(double price);
+}
+
+class StockMarket {
+    private final List<Observer> observers = new ArrayList<>();
+    private double price;
+
+    public void attach(Observer o) { observers.add(o); }
+
+    public void setPrice(double price) {
+        this.price = price;
+        notifyObservers();             // Dispara la notificación
+    }
+
+    private void notifyObservers() {
+        for (Observer o : observers) o.update(price);
+    }
+}
+
+class PriceDisplay implements Observer {
+    @Override
+    public void update(double price) {
+        System.out.printf("[Display] Nuevo precio: $%.2f%n", price);
+    }
+}`,
+    visualizerComponent: PatternVisualizer,
+    quizQuestions: [
+      {
+        id: 1,
+        question: 'En el contexto de la arquitectura del software, ¿qué significa tener un módulo con ALTA cohesión?',
+        options: [
+          'El módulo depende de muchos otros módulos para realizar sus funciones.',
+          'Todos los elementos del módulo están estrechamente relacionados y trabajan hacia un único propósito bien definido.',
+          'El módulo expone una gran cantidad de métodos públicos para que otros puedan usarlo.',
+          'El módulo comparte su estado interno directamente con los módulos que lo invocan.'
+        ],
+        answerIndex: 1,
+        explanation: 'Alta cohesión significa que los elementos de un módulo están lógicamente relacionados y colaboran para cumplir una única responsabilidad. Es un indicador de buen diseño, ya que facilita la comprensión, prueba y mantenimiento del módulo de forma aislada.'
+      },
+      {
+        id: 2,
+        question: '¿Cuál es el principal objetivo del Patrón de Diseño Singleton?',
+        options: [
+          'Crear familias de objetos relacionados sin especificar sus clases concretas.',
+          'Separar la construcción de un objeto complejo de su representación final.',
+          'Garantizar que una clase tenga una única instancia y proporcionar un punto de acceso global a ella.',
+          'Definir el esqueleto de un algoritmo y permitir que las subclases redefinan ciertos pasos.'
+        ],
+        answerIndex: 2,
+        explanation: 'El Singleton es un patrón Creacional que restringe la instanciación de una clase a un único objeto. Es útil para gestionar recursos compartidos como conexiones a bases de datos, archivos de configuración o caches globales.'
+      },
+      {
+        id: 3,
+        question: '¿Qué principio de SOLID establece que una clase debe tener una única razón para cambiar?',
+        options: [
+          'Open/Closed Principle (OCP)',
+          'Liskov Substitution Principle (LSP)',
+          'Interface Segregation Principle (ISP)',
+          'Single Responsibility Principle (SRP)'
+        ],
+        answerIndex: 3,
+        explanation: 'El Principio de Responsabilidad Única (SRP) indica que cada clase o módulo debe encargarse de una sola parte de la funcionalidad del sistema. Si una clase tiene múltiples responsabilidades, los cambios en una de ellas pueden afectar inesperadamente a las demás.'
+      },
+      {
+        id: 4,
+        question: 'En el Patrón Observer, ¿cuál es el rol del objeto llamado "Sujeto" (Subject)?',
+        options: [
+          'Recibir notificaciones de los observadores cuando ellos cambian de estado.',
+          'Mantener el estado relevante y notificar a todos los observadores registrados cuando dicho estado cambia.',
+          'Filtrar y transformar los eventos antes de enviarlos a la interfaz de usuario.',
+          'Reemplazar al observador cuando este deja de estar disponible en el sistema.'
+        ],
+        answerIndex: 1,
+        explanation: 'El Sujeto (o Publisher) es el objeto que posee el estado de interés. Mantiene una lista de Observadores y los notifica automáticamente cada vez que su estado cambia, implementando así la dependencia uno-a-muchos sin acoplamiento directo.'
+      },
+      {
+        id: 5,
+        question: '¿Cuál es la diferencia fundamental entre una arquitectura de microservicios y una arquitectura monolítica?',
+        options: [
+          'Los microservicios solo pueden ser escritos en lenguaje Java, mientras que los monolitos aceptan cualquier lenguaje.',
+          'En una arquitectura monolítica toda la funcionalidad se despliega como una sola unidad, mientras que en microservicios cada función de negocio es un servicio independiente desplegado por separado.',
+          'Los microservicios no pueden utilizar bases de datos relacionales, al contrario que los monolitos.',
+          'La arquitectura monolítica siempre tiene mejor rendimiento que los microservicios en cualquier escenario de uso.'
+        ],
+        answerIndex: 1,
+        explanation: 'Un monolito es una aplicación donde todos los componentes (UI, lógica de negocio, acceso a datos) están fuertemente integrados en un único artefacto desplegable. Los microservicios descomponen ese sistema en servicios pequeños y autónomos que se comunican mediante APIs, permitiendo despliegues, escalados y actualizaciones independientes por servicio.'
+      }
+    ]
   },
   'prog-web-java': {
     label: 'Unidad III',
@@ -344,6 +458,13 @@ export default async function UnitPage({ params }: { params: Promise<{ slug: str
             </div>
           </div>
         </div>
+
+        {/* Pattern Visualizer Section (optional, per-unit) */}
+        {unit.visualizerComponent && (
+          <div className="mt-4">
+            <unit.visualizerComponent />
+          </div>
+        )}
 
         {/* Quiz Section */}
         {unit.quizQuestions && unit.quizQuestions.length > 0 && (
