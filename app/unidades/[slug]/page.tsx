@@ -2,7 +2,7 @@ import React from 'react'
 import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
 import NextLink from 'next/link'
-import { ArrowLeft, BookOpen, Clock, Activity, Settings, Layers, Coffee, Server } from 'lucide-react'
+import { ArrowLeft, BookOpen, Clock, Activity, Settings, Layers, Coffee, Server, Database } from 'lucide-react'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github-dark.css'
 import QuizUnit, { Question } from '@/components/quiz-unit'
@@ -10,6 +10,7 @@ import PatternVisualizer from '@/components/pattern-visualizer'
 import MvcVisualizer from '@/components/mvc-visualizer'
 import TomcatVisualizer from '@/components/tomcat-visualizer'
 import JspVisualizer from '@/components/jsp-visualizer'
+import PersistenceVisualizer from '@/components/persistence-visualizer'
 
 
 interface UnitDetail {
@@ -553,6 +554,118 @@ public class ControllerServlet extends HttpServlet {
         explanation: 'Mezclar código Java en la vista (HTML) hace el código ilegible, propenso a errores y difícil de mantener. En su lugar, se promueve el uso de MVC, donde el controlador maneja la lógica y la vista JSP usa Lenguaje de Expresiones (EL) y JSTL.'
       }
     ]
+  },
+  'motor-persistencia': {
+    label: 'Unidad VI',
+    title: 'Motor de Persistencia',
+    subtitle: 'Persistencia objeto-relacional (ORM) en Java EE utilizando Hibernate.',
+    description: 'En esta unidad se introduce el concepto de motor de persistencia y el problema del desfase objeto-relacional (impedance mismatch) entre la programación orientada a objetos y las bases de datos relacionales. Se estudia la especificación JPA (Jakarta Persistence API) y Hibernate como proveedor. Se analizan las anotaciones básicas de mapeo (@Entity, @Table, @Id, @Column), las estrategias de generación de claves primarias y, en particular, el ciclo de vida de los estados de una entidad (Transient, Persistent, Detached, Removed) y las operaciones de sesión.',
+    icon: Database,
+    complexity: 'Hibernate y Bases de Datos',
+    duration: '3 Semanas',
+    topics: [
+      'Concepto de persistencia y el desfase Objeto-Relacional (impedance mismatch).',
+      'Arquitectura general de un motor de persistencia (JPA y Hibernate).',
+      'Mapeo Objeto-Relacional básico: clases, atributos, llaves primarias y estrategias de generación.',
+      'Estados de ciclo de vida de una entidad: Transient, Persistent, Detached y Removed.',
+      'Operaciones fundamentales de la interfaz Session: persist, merge, remove, close y flush.'
+    ],
+    codeTitle: 'Ejemplo: Entidad de Persistencia en JPA / Hibernate (Java)',
+    codeLang: 'java',
+    code: `import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Column;
+
+@Entity
+@Table(name = "productos")
+public class Producto {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @Column(name = "nombre", nullable = false, length = 100)
+    private String nombre;
+    
+    @Column(name = "precio")
+    private Double precio;
+    
+    // Constructores, Getters y Setters
+    public Producto() {}
+    
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+    public Double getPrecio() { return precio; }
+    public void setPrecio(Double precio) { this.precio = precio; }
+}`,
+    visualizerComponent: PersistenceVisualizer,
+    quizQuestions: [
+      {
+        id: 1,
+        question: '¿Qué es el "desfase objeto-relacional" (impedance mismatch) en el desarrollo de software?',
+        options: [
+          'La diferencia de rendimiento entre un servidor web y un motor de base de datos.',
+          'Las diferencias conceptuales y técnicas al intentar representar objetos de un lenguaje de programación (como Java) en tablas de una base de datos relacional.',
+          'El retraso de tiempo (latencia) al enviar consultas SQL a través de la red.',
+          'La incompatibilidad entre las versiones de Hibernate y el conector JDBC.'
+        ],
+        answerIndex: 1,
+        explanation: 'El desfase objeto-relacional se produce porque el paradigma orientado a objetos (clases, herencia, encapsulamiento, polimorfismo) no coincide directamente con el paradigma relacional de las bases de datos (tablas, filas, claves foráneas, normalización).'
+      },
+      {
+        id: 2,
+        question: '¿Qué diferencia a la especificación JPA de Hibernate?',
+        options: [
+          'JPA es un framework de persistencia listo para usar; Hibernate es solo una guía teórica.',
+          'JPA es un estándar o especificación (interfaces y reglas); Hibernate es un framework concreto que implementa dicha especificación (proveedor de persistencia).',
+          'Hibernate solo funciona con bases de datos NoSQL; JPA solo con bases de datos relacionales.',
+          'No hay diferencias, son dos nombres distintos creados por la misma compañía para el mismo producto.'
+        ],
+        answerIndex: 1,
+        explanation: 'Jakarta Persistence (JPA) es la especificación oficial de Java para el mapeo objeto-relacional, definiendo interfaces como EntityManager. Hibernate es una de las implementaciones reales (proveedor de persistencia) más populares de esa especificación.'
+      },
+      {
+        id: 3,
+        question: 'Si creamos un objeto mediante "Product p = new Product()", ¿en qué estado del ciclo de vida de JPA se encuentra?',
+        options: [
+          'Persistent',
+          'Detached',
+          'Transient',
+          'Removed'
+        ],
+        answerIndex: 2,
+        explanation: 'Un objeto recién creado con "new" en Java que aún no ha sido asociado a ningún EntityManager o Session y no posee representación en la base de datos se encuentra en estado Transient (Transitorio).'
+      },
+      {
+        id: 4,
+        question: '¿Qué sucede con los cambios realizados en una entidad que se encuentra en estado "Persistent" cuando se confirma (commit) la transacción?',
+        options: [
+          'Se descartan si no llamamos manualmente a session.update() para cada atributo.',
+          'Hibernate detecta automáticamente los cambios (dirty checking) y genera y ejecuta las sentencias SQL UPDATE necesarias en el commit/flush.',
+          'La entidad pasa automáticamente a estado Transient para ahorrar memoria.',
+          'Se produce un error de concurrencia y la base de datos se bloquea.'
+        ],
+        answerIndex: 1,
+        explanation: 'Una de las grandes ventajas de Hibernate/JPA es que realiza "dirty checking" sobre entidades en estado Persistent. Al finalizar la transacción, el motor compara el estado actual con el original y actualiza de manera automática la base de datos.'
+      },
+      {
+        id: 5,
+        question: '¿Qué significa que un objeto se encuentra en estado "Detached"?',
+        options: [
+          'El objeto se ha eliminado de la base de datos física.',
+          'El objeto posee una representación (ID) en la base de datos, pero ya no está asociado a una sesión activa de Hibernate, por lo que sus cambios no serán monitorizados.',
+          'El objeto ha perdido todos sus atributos y su valor es null.',
+          'El objeto está esperando una conexión TCP para sincronizarse.'
+        ],
+        answerIndex: 1,
+        explanation: 'El estado Detached (Desconectado) indica que el objeto tiene identidad de base de datos (clave primaria) pero ya no pertenece al contexto de persistencia actual (por ejemplo, porque la sesión de Hibernate se cerró).'
+      }
+    ]
   }
 }
 
@@ -562,7 +675,8 @@ export function generateStaticParams() {
     { slug: 'arquitectura' },
     { slug: 'prog-web-java' },
     { slug: 'servidor-aplicaciones' },
-    { slug: 'java-server-pages' }
+    { slug: 'java-server-pages' },
+    { slug: 'motor-persistencia' }
   ]
 }
 
