@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowRight, Layers, Settings, Coffee, Server } from 'lucide-react'
+import { ArrowRight, Layers, Settings, Coffee, Server, FileCode } from 'lucide-react'
 
 const UNITS = [
   {
@@ -68,6 +68,22 @@ const UNITS = [
       'Despliegue de aplicaciones'
     ],
     complexity: 'Tomcat y Despliegue',
+  },
+  {
+    id: 'unidad-5',
+    label: 'Unidad V',
+    title: 'Java Server Pages',
+    icon: FileCode,
+    href: '/unidades/java-server-pages',
+    color: 'oklch(0.70 0.16 300)',
+    colorDim: 'oklch(0.22 0.08 300)',
+    topics: [
+      'Ciclo de vida de una página JSP',
+      'Scriptlets, Expresiones y Declaraciones',
+      'Directivas y Objetos implícitos',
+      'Lenguaje de Expresiones (EL) y JSTL'
+    ],
+    complexity: 'JSP y Plantillas',
   }
 ]
 

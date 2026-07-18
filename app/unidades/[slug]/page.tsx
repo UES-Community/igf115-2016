@@ -9,6 +9,7 @@ import QuizUnit, { Question } from '@/components/quiz-unit'
 import PatternVisualizer from '@/components/pattern-visualizer'
 import MvcVisualizer from '@/components/mvc-visualizer'
 import TomcatVisualizer from '@/components/tomcat-visualizer'
+import JspVisualizer from '@/components/jsp-visualizer'
 
 
 interface UnitDetail {
@@ -456,6 +457,102 @@ public class ControllerServlet extends HttpServlet {
         explanation: 'El componente Context representa a una aplicación web individual que corre en un host virtual determinado. Cada Context tiene su propio path y carga sus recursos de forma aislada.'
       }
     ]
+  },
+  'java-server-pages': {
+    label: 'Unidad V',
+    title: 'Java Server Pages',
+    subtitle: 'Ciclo de vida, directivas, elementos sintácticos y objetos implícitos.',
+    description: 'JavaServer Pages (JSP) es una tecnología que ayuda a los desarrolladores de software a crear páginas web dinámicas basadas en HTML y XML utilizando Java. Se analiza el ciclo de vida de una página JSP, que consiste en la traducción a un servlet, su compilación, inicialización, procesamiento de solicitudes mediante _jspService() y destrucción. Se abordan los objetos implícitos (request, response, session, out, etc.), directivas de página e inclusión, y el uso del Lenguaje de Expresiones (EL) y JSTL para evitar código Java embebido en la vista.',
+    icon: BookOpen,
+    complexity: 'JSP y Plantillas',
+    duration: '2 Semanas',
+    topics: [
+      'Ciclo de vida de una página JSP (Traducción, Compilación, Ciclo de Servicio).',
+      'Elementos Scripting: Scriptlets (<% %>), Expresiones (<%= %>) y Declaraciones (<%! %>).',
+      'Directivas de JSP: page, include y taglib.',
+      'Objetos implícitos: request, response, session, application, out, pageContext.',
+      'Lenguaje de Expresiones (EL) y Biblioteca de Etiquetas Estándar (JSTL).'
+    ],
+    codeTitle: 'Ejemplo: Página JSP con JSTL y EL (JSP)',
+    codeLang: 'jsp',
+    code: `<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<html>
+<head>
+    <title>Lista de Estudiantes</title>
+</head>
+<body>
+    <h2>Estudiantes Registrados</h2>
+    <ul>
+        <c:forEach var="estudiante" items="\${estudiantes}">
+            <li>\${estudiante.nombre} - Nota: \${estudiante.nota}</li>
+        </c:forEach>
+    </ul>
+</body>
+</html>`,
+    visualizerComponent: JspVisualizer,
+    quizQuestions: [
+      {
+        id: 1,
+        question: '¿Cuál es la primera fase del ciclo de vida de una página JSP en Tomcat?',
+        options: [
+          'Compilación del archivo .class',
+          'Traducción del archivo .jsp a código fuente Java (.java) de un servlet',
+          'Ejecución del método _jspService()',
+          'Carga de la clase en memoria'
+        ],
+        answerIndex: 1,
+        explanation: 'Antes de compilarse o ejecutarse, el motor Jasper de Tomcat debe traducir el archivo JSP a código fuente de Java (.java) que extiende de HttpJspBase, convirtiéndolo en un Servlet clásico.'
+      },
+      {
+        id: 2,
+        question: '¿Cuál es la diferencia sintáctica y funcional entre una Declaración (<%! %>) y un Scriptlet (<% %>) en JSP?',
+        options: [
+          'No hay diferencia, ambos se insertan dentro del método _jspService().',
+          'La Declaración define variables y métodos a nivel de clase (miembros del servlet); el Scriptlet inserta código local dentro del método de servicio _jspService().',
+          'El Scriptlet se ejecuta en el navegador del cliente; la Declaración en el servidor.',
+          'La Declaración solo acepta variables estáticas y constantes.'
+        ],
+        answerIndex: 1,
+        explanation: 'El código dentro de <%! %> define variables de instancia y métodos de la clase Servlet. En cambio, <% %> define variables locales y código procedimental que corre dentro del método _jspService() por cada petición.'
+      },
+      {
+        id: 3,
+        question: '¿Qué objeto implícito de JSP se utiliza para escribir contenido en el cuerpo de la respuesta HTTP?',
+        options: [
+          'response',
+          'out',
+          'writer',
+          'print'
+        ],
+        answerIndex: 1,
+        explanation: 'out es un objeto de la clase JspWriter provisto automáticamente por el contenedor para escribir contenido dinámico (caracteres) directamente en la respuesta enviada al cliente.'
+      },
+      {
+        id: 4,
+        question: '¿Qué directiva de JSP se utiliza para importar librerías de etiquetas personalizadas como JSTL?',
+        options: [
+          '<%@ page %>',
+          '<%@ include %>',
+          '<%@ taglib %>',
+          '<%@ import %>'
+        ],
+        answerIndex: 2,
+        explanation: 'La directiva <%@ taglib %> declara que la página JSP utiliza un conjunto de etiquetas personalizadas, especificando su URI única y el prefijo para usarlas (ej: prefix="c").'
+      },
+      {
+        id: 5,
+        question: '¿Por qué se considera una mala práctica abusar de los Scriptlets (<% %>) en proyectos modernos de Java Web?',
+        options: [
+          'Porque reducen la velocidad de red de las peticiones.',
+          'Porque mezclan lógica de presentación (HTML) con lógica de control/negocio (Java), dificultando el mantenimiento y violando la separación de responsabilidades.',
+          'Porque las JSPs modernas no soportan compilación si tienen código Java.',
+          'Porque las variables declaradas en scriptlets ocupan demasiada memoria en la base de datos.'
+        ],
+        answerIndex: 1,
+        explanation: 'Mezclar código Java en la vista (HTML) hace el código ilegible, propenso a errores y difícil de mantener. En su lugar, se promueve el uso de MVC, donde el controlador maneja la lógica y la vista JSP usa Lenguaje de Expresiones (EL) y JSTL.'
+      }
+    ]
   }
 }
 
@@ -464,7 +561,8 @@ export function generateStaticParams() {
     { slug: 'el-software' },
     { slug: 'arquitectura' },
     { slug: 'prog-web-java' },
-    { slug: 'servidor-aplicaciones' }
+    { slug: 'servidor-aplicaciones' },
+    { slug: 'java-server-pages' }
   ]
 }
 
