@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowRight, Layers, Settings, Coffee, Server, FileCode } from 'lucide-react'
+import { ArrowRight, Layers, Settings, Coffee, Server, FileCode, Database } from 'lucide-react'
 
 const UNITS = [
   {
@@ -84,6 +84,22 @@ const UNITS = [
       'Lenguaje de Expresiones (EL) y JSTL'
     ],
     complexity: 'JSP y Plantillas',
+  },
+  {
+    id: 'unidad-6',
+    label: 'Unidad VI',
+    title: 'Motor de Persistencia',
+    icon: Database,
+    href: '/unidades/motor-persistencia',
+    color: 'oklch(0.70 0.15 140)',
+    colorDim: 'oklch(0.22 0.07 140)',
+    topics: [
+      'Concepto de persistencia y desfase ORM',
+      'Arquitectura de Hibernate y JPA',
+      'Estados del ciclo de vida de entidades',
+      'Mapeo básico: anotaciones y llaves primarias'
+    ],
+    complexity: 'Hibernate y Bases de Datos',
   }
 ]
 
