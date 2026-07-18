@@ -8,6 +8,7 @@ import 'highlight.js/styles/github-dark.css'
 import QuizUnit, { Question } from '@/components/quiz-unit'
 import PatternVisualizer from '@/components/pattern-visualizer'
 import MvcVisualizer from '@/components/mvc-visualizer'
+import TomcatVisualizer from '@/components/tomcat-visualizer'
 
 
 interface UnitDetail {
@@ -391,7 +392,70 @@ public class ControllerServlet extends HttpServlet {
            connectionTimeout="20000"
            redirectPort="8443" 
            maxThreads="150"
-           URIEncoding="UTF-8" />`
+           URIEncoding="UTF-8" />`,
+    visualizerComponent: TomcatVisualizer,
+    quizQuestions: [
+      {
+        id: 1,
+        question: '¿Cuál es la diferencia fundamental entre un Servidor Web y un Servidor de Aplicaciones?',
+        options: [
+          'Un servidor web solo sirve contenido estático (HTML, CSS, imágenes), mientras que un servidor de aplicaciones puede generar contenido dinámico ejecutando lógica de negocio (servlets, EJB, etc.).',
+          'Un servidor web es más rápido que un servidor de aplicaciones para cualquier tipo de recurso.',
+          'El servidor de aplicaciones no requiere de un puerto HTTP para funcionar.',
+          'Los servidores web solo funcionan en sistemas Linux y los servidores de aplicaciones en Windows.'
+        ],
+        answerIndex: 0,
+        explanation: 'Los servidores web (como Apache HTTP Server o Nginx) están optimizados para servir archivos estáticos. Los servidores de aplicaciones (como Tomcat, GlassFish, WildFly) implementan especificaciones empresariales que permiten ejecutar código del lado del servidor para procesar datos dinámicos.'
+      },
+      {
+        id: 2,
+        question: 'En Apache Tomcat, ¿cuál es el propósito del archivo conf/server.xml?',
+        options: [
+          'Definir los nombres de usuario y contraseñas para ingresar al panel de administración (Manager App).',
+          'Configurar la arquitectura y los recursos globales del servidor, como los puertos de escucha (Connectors), motores, hosts y pools de conexiones JDBC.',
+          'Establecer la versión de Java Runtime Environment que usará el servidor.',
+          'Almacenar el código fuente de los servlets compilados en tiempo de ejecución.'
+        ],
+        answerIndex: 1,
+        explanation: 'server.xml es el archivo de configuración central de Tomcat. Permite definir puertos, protocolos, hosts virtuales (Host), motores de servlets (Engine) y conectores HTTP/AJP.'
+      },
+      {
+        id: 3,
+        question: '¿Para qué se utiliza la variable de entorno CATALINA_HOME en una instalación de Tomcat?',
+        options: [
+          'Para indicar la ruta del compilador de Java (javac).',
+          'Para establecer el puerto por defecto en el que escuchará el conector HTTP.',
+          'Para apuntar al directorio raíz de la instalación de Tomcat (donde residen los binarios y librerías comunes).',
+          'Para guardar la contraseña del usuario administrador.'
+        ],
+        answerIndex: 2,
+        explanation: 'CATALINA_HOME representa el directorio raíz de la instalación de Tomcat, sirviendo de referencia para localizar archivos ejecutables (bin/) y dependencias compartidas (lib/).'
+      },
+      {
+        id: 4,
+        question: 'Dentro de la estructura estándar de una aplicación web Java (.war), ¿dónde se ubican las librerías externas (.jar) de las que depende el proyecto?',
+        options: [
+          'Directamente en la raíz de la aplicación web.',
+          'Dentro del directorio WEB-INF/lib/.',
+          'En la carpeta WEB-INF/classes/.',
+          'En el directorio META-INF/maven/.'
+        ],
+        answerIndex: 1,
+        explanation: 'De acuerdo a la especificación de Servlet de Java, el directorio WEB-INF/lib/ está destinado a almacenar todas las librerías empaquetadas en archivos .jar requeridas por la aplicación en tiempo de ejecución.'
+      },
+      {
+        id: 5,
+        question: 'En la arquitectura interna de Tomcat, ¿qué componente representa a una aplicación web de forma individual en ejecución?',
+        options: [
+          'Connector',
+          'Engine',
+          'Host',
+          'Context'
+        ],
+        answerIndex: 3,
+        explanation: 'El componente Context representa a una aplicación web individual que corre en un host virtual determinado. Cada Context tiene su propio path y carga sus recursos de forma aislada.'
+      }
+    ]
   }
 }
 
