@@ -7,6 +7,8 @@ import hljs from 'highlight.js'
 import 'highlight.js/styles/github-dark.css'
 import QuizUnit, { Question } from '@/components/quiz-unit'
 import PatternVisualizer from '@/components/pattern-visualizer'
+import MvcVisualizer from '@/components/mvc-visualizer'
+
 
 interface UnitDetail {
   title: string
@@ -265,7 +267,13 @@ class PriceDisplay implements Observer {
     label: 'Unidad III',
     title: 'Programación Web en Java',
     subtitle: 'Diferentes arquitecturas para la programación y arquitectura de aplicaciones Web.',
-    description: 'Esta unidad introduce la infraestructura y patrones necesarios para construir aplicaciones web empresariales. Se examinan las tecnologías clave de la plataforma Java (Servlets, JSP, filtros) y cómo encajan en una arquitectura de tres capas usando el patrón Model-View-Controller (MVC) para separar la interfaz de usuario, la lógica de negocios y la persistencia de datos.',
+    description: `La programación web en la plataforma Java se basa en una sólida arquitectura cliente-servidor, donde el servidor de aplicaciones gestiona los recursos y el ciclo de vida del software. En esta unidad, se introduce el desarrollo web empresarial utilizando tecnologías fundamentales como Java Servlets y JavaServer Pages (JSP), enmarcadas dentro de la especificación Jakarta EE (anteriormente Java EE).
+
+El núcleo del diseño estructurado en esta unidad es el patrón Modelo-Vista-Controlador (MVC). El Controlador, implementado típicamente como un Java Servlet, intercepta las solicitudes del usuario, procesa los parámetros y determina qué acción ejecutar. El Modelo representa los datos y las reglas de negocio (utilizando clases Java estándar, Beans o patrones como DAO). La Vista, implementada mediante páginas JSP, se encarga únicamente de renderizar la respuesta HTML final.
+
+Además del flujo básico de MVC, se analiza el ciclo de vida de un Servlet (compuesto por los métodos init(), service() y destroy()), la gestión de estado conversacional y de sesión a través del objeto HttpSession, y la capacidad de interceptar y filtrar peticiones utilizando filtros servlet (@WebFilter), indispensables para tareas transversales como seguridad, codificación de caracteres y logging.
+
+La adopción de estas arquitecturas y la separación de responsabilidades (separation of concerns) previene la sobrecarga de lógica en la interfaz de usuario, evitando prácticas obsoletas como la mezcla de consultas SQL directas en páginas de presentación JSP, lo que garantiza el desarrollo de aplicaciones web mantenibles, escalables y testeables.`,
     icon: Coffee,
     complexity: 'Arquitectura Web',
     duration: '3 Semanas',
@@ -296,7 +304,70 @@ public class ControllerServlet extends HttpServlet {
             request.getRequestDispatcher("/productos.jsp").forward(request, response);
         }
     }
-}`
+}`,
+    visualizerComponent: MvcVisualizer,
+    quizQuestions: [
+      {
+        id: 1,
+        question: 'En una arquitectura web MVC con Java, ¿cuál es la responsabilidad del Servlet?',
+        options: [
+          'Almacenar permanentemente los datos en la base de datos.',
+          'Actuar como controlador, interceptando peticiones, extrayendo parámetros y redirigiendo el flujo.',
+          'Renderizar directamente el código HTML con estilos CSS en la pantalla del usuario.',
+          'Definir los estilos visuales y la responsividad del sitio web.'
+        ],
+        answerIndex: 1,
+        explanation: 'En el patrón MVC, el Servlet actúa como el Controlador. Es el encargado de recibir la solicitud HTTP del cliente, interactuar con el modelo (si es necesario) y delegar a la vista (JSP) la presentación del resultado.'
+      },
+      {
+        id: 2,
+        question: '¿Qué objeto de la API de Servlets permite compartir datos y mantener el estado entre diferentes solicitudes de un mismo usuario?',
+        options: [
+          'ServletConfig',
+          'HttpServletRequest',
+          'HttpSession',
+          'ServletContext'
+        ],
+        answerIndex: 2,
+        explanation: 'HttpSession representa la sesión del usuario en el servidor. Permite guardar atributos que persisten a lo largo de múltiples peticiones del mismo cliente durante su visita, a diferencia de HttpServletRequest que se destruye tras responder a una petición individual.'
+      },
+      {
+        id: 3,
+        question: '¿Qué método del ciclo de vida de un Servlet se ejecuta exactamente una vez cuando el contenedor web carga el Servlet por primera vez?',
+        options: [
+          'doGet()',
+          'service()',
+          'init()',
+          'destroy()'
+        ],
+        answerIndex: 2,
+        explanation: 'El método init() es llamado por el contenedor de servlets una sola vez tras instanciar la clase del Servlet. Se utiliza para inicializar recursos como conexiones a bases de datos o lectura de configuraciones.'
+      },
+      {
+        id: 4,
+        question: 'En un desarrollo web bajo MVC en Java, ¿dónde debería colocarse la lógica de negocio y las consultas SQL?',
+        options: [
+          'En scripts embebidos <% %> dentro de la página JSP.',
+          'En el método init() del Servlet.',
+          'En las clases del Modelo (como Java Beans o DAOs).',
+          'Directamente en el navegador del cliente usando JavaScript.'
+        ],
+        answerIndex: 2,
+        explanation: 'La lógica de negocio y acceso a datos pertenece enteramente a la capa de Modelo (Beans, DAOs, Entidades, etc.). Poner consultas de base de datos o lógica compleja en Servlets o JSPs acopla el código, reduce su mantenibilidad y viola el patrón MVC.'
+      },
+      {
+        id: 5,
+        question: '¿Cuál es la diferencia de comportamiento clave entre RequestDispatcher.forward() y HttpServletResponse.sendRedirect()?',
+        options: [
+          'forward() se ejecuta en el navegador del cliente; sendRedirect() se procesa en el servidor.',
+          'forward() redirige de forma interna en el servidor sin cambiar la URL en el cliente; sendRedirect() devuelve una cabecera 302 forzando al navegador a hacer una nueva solicitud a una URL distinta.',
+          'sendRedirect() no puede enviar datos a páginas del mismo dominio, mientras que forward() sí.',
+          'No existe ninguna diferencia; ambos métodos realizan la misma redirección interna.'
+        ],
+        answerIndex: 1,
+        explanation: 'El forward es una transferencia de control interna del servidor, transparente al cliente. En cambio, sendRedirect ordena al navegador (vía estado HTTP 302/303) a realizar una petición nueva, lo que actualiza la barra de direcciones del navegador y requiere una ida y vuelta completa.'
+      }
+    ]
   },
   'servidor-aplicaciones': {
     label: 'Unidad IV',
