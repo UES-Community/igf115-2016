@@ -158,7 +158,7 @@ export default function UnitsGrid() {
               id="units-heading"
               className="font-display text-3xl font-700 text-[var(--igf-ink)] tracking-tight md:text-4xl"
             >
-              4 Unidades Temáticas
+              8 Unidades Temáticas
             </h2>
           </div>
           <p className="text-sm text-[var(--igf-muted)] max-w-sm leading-relaxed">
