@@ -1,12 +1,12 @@
 # IGF115-2016 — Ingeniería del Software UES
 
-Plataforma web educativa e interactiva diseñada para la materia **Ingeniería del Software** de la Universidad de El Salvador (UES), focalizada en la enseñanza y práctica de la Programación, Estructuras de Datos y Algoritmos.
+Plataforma web educativa e interactiva diseñada para la materia **Ingeniería del Software** de la Universidad de El Salvador (UES), focalizada en la enseñanza y práctica de Arquitecturas de Software, Desarrollo Web en Java, Patrones de Diseño, Servidores de Aplicaciones y Persistencia de Datos.
 
 ## Características
 
-- 📘 **Unidades de Estudio**: Dashboard con las 6 unidades de la materia (Fundamentos, Estructuras Lineales, Estructuras No Lineales, Grafos, Ordenamiento y Complejidad).
+- 📘 **Unidades de Estudio**: Dashboard interactivo con las 8 unidades del programa de estudio de Ingeniería del Software (Fundamentos de IS, Arquitectura, Programación Web en Java, Servidor Tomcat, JSP, Motor de Persistencia Hibernate/JPA, Hibernate Avanzado y Framework Spring).
 - 💻 **Editor Interactivo**: Área de código en el navegador con soporte para JavaScript (ejecución real en consola virtual), Python y C++ (plantillas de referencia).
-- 📊 **Visualizaciones Animadas**: Simulador dinámico paso a paso para **Pilas (Stacks)** y **Colas (Queues)** que ilustra gráficamente inserciones y retiros de elementos.
+- 📊 **Visualizaciones Animadas**: Simuladores dinámicos interactivos para arquitecturas, patrones de diseño y flujos de ejecución (Tomcat, MVC, Patrones GoF, Persistencia JDBC/Hibernate y Spring IoC).
 - 🎨 **Diseño Moderno**: Interfaz premium oscura con glassmorphism, tipografía fluida y animaciones de entrada.
 
 ## Tecnologías Utilizadas
