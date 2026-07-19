@@ -2,7 +2,7 @@ import React from 'react'
 import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
 import NextLink from 'next/link'
-import { ArrowLeft, BookOpen, Clock, Activity, Settings, Layers, Coffee, Server, Database, Network } from 'lucide-react'
+import { ArrowLeft, BookOpen, Clock, Activity, Settings, Layers, Coffee, Server, Database, Network, Cpu } from 'lucide-react'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github-dark.css'
 import QuizUnit, { Question } from '@/components/quiz-unit'
@@ -12,6 +12,7 @@ import TomcatVisualizer from '@/components/tomcat-visualizer'
 import JspVisualizer from '@/components/jsp-visualizer'
 import PersistenceVisualizer from '@/components/persistence-visualizer'
 import AdvancedPersistenceVisualizer from '@/components/advanced-persistence-visualizer'
+import SpringVisualizer from '@/components/spring-visualizer'
 
 
 interface UnitDetail {
@@ -779,6 +780,118 @@ public class Producto {
         explanation: 'CascadeType.REMOVE propaga la operación de eliminación (DELETE) del objeto padre a sus objetos hijos asociados. Al eliminar la Categoria, Hibernate emitirá sentencias de borrado automáticas para todos sus Productos.'
       }
     ]
+  },
+  'framework-spring': {
+    label: 'Unidad VIII',
+    title: 'Framework Spring',
+    subtitle: 'Inversión de Control (IoC), Inyección de Dependencias (DI) y Spring Web MVC.',
+    description: 'En esta unidad se aborda la problemática del acoplamiento y la proliferación de objetos superfluos en aplicaciones orientadas a objetos, resolviéndolos mediante el núcleo de Spring Framework. Se explica en profundidad el principio de Inversión de Control (IoC) y el patrón Inyección de Dependencias (DI), administrados por el contenedor ApplicationContext. Se analiza la diferencia entre los patrones Singleton y Factory aplicados a la instanciación de Beans, los alcances (@Scope("singleton") vs @Scope("prototype")), y la construcción de aplicaciones web utilizando Spring Web MVC (@RestController, @GetMapping, @PostMapping).',
+    icon: Cpu,
+    complexity: 'Spring Boot y MVC',
+    duration: '3 Semanas',
+    topics: [
+      'El problema de objetos superfluos y acoplamiento fuerte en POO.',
+      'Principio de Inversión de Control (IoC) y el contenedor ApplicationContext.',
+      'Inyección de Dependencias (@Autowired) por constructor y campo.',
+      'Patrones Singleton y Factory integrados en el ciclo de vida de los Beans de Spring.',
+      'Alcances de Beans (Scopes): Singleton frente a Prototype.',
+      'Arquitectura de aplicaciones web con Spring Web MVC (@RestController y anotaciones HTTP).'
+    ],
+    codeTitle: 'Ejemplo: Controlador y Servicio con Inyección de Dependencias (Java)',
+    codeLang: 'java',
+    code: `// --- CAPA DE SERVICIO ---
+@Service
+public class ProductoService {
+    private final ProductoRepository repository;
+
+    @Autowired // Inyección por constructor recomendada
+    public ProductoService(ProductoRepository repository) {
+        this.repository = repository;
+    }
+
+    public List<Producto> obtenerTodos() {
+        return repository.findAll();
+    }
+}
+
+// --- CAPA DE CONTROLADOR (Spring Web MVC) ---
+@RestController
+@RequestMapping("/api/productos")
+public class ProductoController {
+    private final ProductoService service;
+
+    public ProductoController(ProductoService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public List<Producto> listar() {
+        return service.obtenerTodos();
+    }
+}`,
+    visualizerComponent: SpringVisualizer,
+    quizQuestions: [
+      {
+        id: 1,
+        question: '¿Cuál es la función principal del Contenedor IoC (ApplicationContext) en Spring Framework?',
+        options: [
+          'Compilar archivos .java a bytecode en tiempo de ejecución.',
+          'Instanciar, configurar, ensamblar e inyectar las dependencias de los componentes (Beans) de la aplicación durante todo su ciclo de vida.',
+          'Conectarse directamente a la base de datos sin requerir drivers JDBC.',
+          'Generar código HTML dinámico para navegadores antiguos.'
+        ],
+        answerIndex: 1,
+        explanation: 'El contenedor IoC de Spring es el corazón del framework. Se encarga de instanciar los componentes (Beans), resolver sus dependencias e inyectarlas automáticamente.'
+      },
+      {
+        id: 2,
+        question: '¿Por qué la Inyección de Dependencias (DI) ayuda a evitar el problema de "objetos superfluos" y acoplamiento fuerte?',
+        options: [
+          'Porque prohíbe el uso de clases en Java.',
+          'Porque evita que las clases creen directamente con el operador "new" sus propias dependencias, delegando esa responsabilidad al contenedor y permitiendo reutilizar una única instancia gestionada.',
+          'Porque duplica las instancias en memoria para acelerar el procesamiento.',
+          'Porque elimina la necesidad de escribir controladores en aplicaciones web.'
+        ],
+        answerIndex: 1,
+        explanation: 'Al inyectar dependencias en lugar de instanciarlas manualmente dentro de cada clase con "new", se eliminan objetos duplicados o redundantes y se desacomplan los componentes, facilitando el mantenimiento y las pruebas unitarias.'
+      },
+      {
+        id: 3,
+        question: '¿Cuál es el alcance (Scope) por defecto de un Bean en Spring Framework si no se especifica otra anotación @Scope?',
+        options: [
+          'Prototype',
+          'Request',
+          'Singleton',
+          'Session'
+        ],
+        answerIndex: 2,
+        explanation: 'El alcance por defecto en Spring es Singleton. Esto significa que el contenedor creará una única instancia compartida del bean para toda la aplicación.'
+      },
+      {
+        id: 4,
+        question: '¿Cuál es la diferencia de comportamiento entre un Bean de alcance Singleton y uno de alcance Prototype?',
+        options: [
+          'Singleton crea una sola instancia compartida para toda la aplicación; Prototype crea una nueva instancia cada vez que el bean es solicitado o inyectado.',
+          'Prototype solo funciona en servidores Windows y Singleton en Linux.',
+          'Singleton es solo para bases de datos y Prototype para controladores web.',
+          'No existe diferencia alguna, son sinónimos en Spring Boot.'
+        ],
+        answerIndex: 0,
+        explanation: 'Singleton gestiona una única instancia reutilizable por el ApplicationContext. Prototype instruye a Spring a crear un objeto nuevo cada vez que se requiere el bean.'
+      },
+      {
+        id: 5,
+        question: 'En Spring Web MVC, ¿cuál es la ventaja de utilizar Inyección de Dependencias por constructor frente a la inyección directa en el campo mediante @Autowired?',
+        options: [
+          'La inyección por constructor permite que las dependencias sean declaradas como final (inmutables) y simplifica la creación de pruebas unitarias sin necesitar el contenedor activo.',
+          'La inyección en campo es obligatoria en versiones modernas de Java.',
+          'La inyección por constructor consume el doble de memoria RAM.',
+          'La inyección por campo evita la compilación del código.'
+        ],
+        answerIndex: 0,
+        explanation: 'La inyección por constructor se considera la mejor práctica en Spring porque garantiza que las dependencias no sean nulas, permite hacer los atributos inmutables (final) y facilita testear la clase instanciándola directamente en pruebas unitarias.'
+      }
+    ]
   }
 }
 
@@ -790,7 +903,8 @@ export function generateStaticParams() {
     { slug: 'servidor-aplicaciones' },
     { slug: 'java-server-pages' },
     { slug: 'motor-persistencia' },
-    { slug: 'hibernate-avanzado' }
+    { slug: 'hibernate-avanzado' },
+    { slug: 'framework-spring' }
   ]
 }
 

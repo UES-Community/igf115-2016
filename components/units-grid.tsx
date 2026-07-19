@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowRight, Layers, Settings, Coffee, Server, FileCode, Database, Network } from 'lucide-react'
+import { ArrowRight, Layers, Settings, Coffee, Server, FileCode, Database, Network, Cpu } from 'lucide-react'
 
 const UNITS = [
   {
@@ -116,6 +116,22 @@ const UNITS = [
       'Propagación de operaciones: Cascade'
     ],
     complexity: 'Hibernate Avanzado',
+  },
+  {
+    id: 'unidad-8',
+    label: 'Unidad VIII',
+    title: 'Framework Spring',
+    icon: Cpu,
+    href: '/unidades/framework-spring',
+    color: 'oklch(0.70 0.16 150)',
+    colorDim: 'oklch(0.22 0.08 150)',
+    topics: [
+      'Inversión de Control (IoC) y Contenedor',
+      'Inyección de Dependencias (@Autowired)',
+      'Scopes de Beans: Singleton vs Prototype',
+      'Desarrollo Web con Spring Web MVC'
+    ],
+    complexity: 'Spring Boot y MVC',
   }
 ]
 
