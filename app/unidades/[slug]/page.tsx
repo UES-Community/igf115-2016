@@ -2,7 +2,7 @@ import React from 'react'
 import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
 import NextLink from 'next/link'
-import { ArrowLeft, BookOpen, Clock, Activity, Settings, Layers, Coffee, Server, Database } from 'lucide-react'
+import { ArrowLeft, BookOpen, Clock, Activity, Settings, Layers, Coffee, Server, Database, Network } from 'lucide-react'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github-dark.css'
 import QuizUnit, { Question } from '@/components/quiz-unit'
@@ -11,6 +11,7 @@ import MvcVisualizer from '@/components/mvc-visualizer'
 import TomcatVisualizer from '@/components/tomcat-visualizer'
 import JspVisualizer from '@/components/jsp-visualizer'
 import PersistenceVisualizer from '@/components/persistence-visualizer'
+import AdvancedPersistenceVisualizer from '@/components/advanced-persistence-visualizer'
 
 
 interface UnitDetail {
@@ -666,6 +667,118 @@ public class Producto {
         explanation: 'El estado Detached (Desconectado) indica que el objeto tiene identidad de base de datos (clave primaria) pero ya no pertenece al contexto de persistencia actual (por ejemplo, porque la sesión de Hibernate se cerró).'
       }
     ]
+  },
+  'hibernate-avanzado': {
+    label: 'Unidad VII',
+    title: 'Hibernate Avanzado',
+    subtitle: 'Asociaciones avanzadas, estrategias de carga y propagación de operaciones.',
+    description: 'En esta unidad se profundiza en el mapeo de asociaciones de datos complejas. Se analizan las relaciones uno a uno (@OneToOne), uno a muchos y muchos a uno (@OneToMany/@ManyToOne), y muchos a muchos (@ManyToMany) utilizando tablas de unión intermedias. Además, se estudian las estrategias de carga FetchType.LAZY (carga diferida mediante proxies de Hibernate) y FetchType.EAGER (carga inmediata mediante sentencias JOIN), resolviendo problemas clásicos como el problema de las N+1 consultas. Finalmente, se explica el concepto de CascadeType (ALL, PERSIST, REMOVE, etc.) para propagar operaciones del ciclo de vida.',
+    icon: Network,
+    complexity: 'Hibernate Avanzado',
+    duration: '3 Semanas',
+    topics: [
+      'Modelado de asociaciones: relaciones unidireccionales y bidireccionales.',
+      'Asociaciones @OneToOne y relaciones de llave primaria compartida.',
+      'Asociaciones @OneToMany y @ManyToOne utilizando llaves foráneas.',
+      'Asociaciones @ManyToMany y el mapeo mediante tabla intermedia (@JoinTable).',
+      'Estrategias de carga: FetchType.EAGER frente a FetchType.LAZY y el comportamiento del proxy.',
+      'Propagación de operaciones del ciclo de vida (CascadeType) y orphanRemoval.'
+    ],
+    codeTitle: 'Ejemplo: Asociación Bidireccional OneToMany / ManyToOne (Java)',
+    codeLang: 'java',
+    code: `// --- LADO PADRE (Categoria.java) ---
+@Entity
+public class Categoria {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    private String nombre;
+
+    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Producto> productos = new ArrayList<>();
+    
+    // Getters y Setters...
+}
+
+// --- LADO HIJO (Producto.java) ---
+@Entity
+public class Producto {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    private String nombre;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
+    
+    // Getters y Setters...
+}`,
+    visualizerComponent: AdvancedPersistenceVisualizer,
+    quizQuestions: [
+      {
+        id: 1,
+        question: '¿Qué anotación se utiliza en JPA para especificar la columna de clave foránea (Foreign Key) en una relación?',
+        options: [
+          '@ForeignKey',
+          '@JoinColumn',
+          '@PrimaryKeyJoinColumn',
+          '@Column'
+        ],
+        answerIndex: 1,
+        explanation: 'La anotación @JoinColumn se utiliza para indicar la columna física de la tabla que actuará como clave foránea (FK) apuntando a la clave primaria de la otra tabla.'
+      },
+      {
+        id: 2,
+        question: 'En una relación bidireccional, ¿cuál es el propósito de configurar el atributo "mappedBy"?',
+        options: [
+          'Indicar qué base de datos física contiene las tablas.',
+          'Definir cuál es el lado inverso (no propietario) de la relación, apuntando al nombre del campo que posee la propiedad en la clase propietaria.',
+          'Desactivar la carga diferida (LAZY) para obligar a cargar todos los datos.',
+          'Establecer una clave primaria compuesta en la base de datos.'
+        ],
+        answerIndex: 1,
+        explanation: 'En relaciones bidireccionales, mappedBy se coloca en el lado inverso de la relación para indicar que el mapeo ya está definido en la otra entidad (el lado propietario) mediante un atributo específico, evitando duplicar configuraciones.'
+      },
+      {
+        id: 3,
+        question: '¿Cuál es la diferencia fundamental en la base de datos entre FetchType.LAZY y FetchType.EAGER?',
+        options: [
+          'EAGER carga los datos asociados inmediatamente en una única consulta (usualmente con un JOIN), mientras que LAZY pospone la consulta de los asociados hasta que se accede explícitamente a ellos (generando consultas secundarias).',
+          'LAZY hace que la base de datos sea relacional y EAGER la convierte en NoSQL.',
+          'EAGER consume menos memoria RAM en el servidor que LAZY.',
+          'LAZY solo funciona con transacciones read-only.'
+        ],
+        answerIndex: 0,
+        explanation: 'FetchType.EAGER instruye a Hibernate a cargar la entidad y sus colecciones asociadas juntas de inmediato. FetchType.LAZY carga los asociados de forma tardía, devolviendo inicialmente un Proxy y ejecutando la consulta en base de datos solo cuando la colección es leída.'
+      },
+      {
+        id: 4,
+        question: '¿Qué es el "problema de las N+1 consultas" en motores ORM como Hibernate?',
+        options: [
+          'Un fallo de red provocado al abrir más de N conexiones concurrentes en el pool.',
+          'Un problema común con FetchType.LAZY al iterar sobre N entidades principales: Hibernate ejecuta 1 consulta para cargar la lista principal y luego N consultas individuales adicionales para inicializar las relaciones de cada elemento.',
+          'El límite teórico de consultas SQL que puede procesar un conector JDBC por segundo.',
+          'La imposibilidad de ejecutar transacciones distribuidas en Hibernate.'
+        ],
+        answerIndex: 1,
+        explanation: 'El problema de las N+1 consultas ocurre cuando se recupera una lista de N entidades y, al intentar acceder a una propiedad perezosa (LAZY) de cada una, el ORM realiza una consulta SQL adicional por cada una de las N entidades (N consultas) más la consulta inicial (+1).'
+      },
+      {
+        id: 5,
+        question: 'Si se define "cascade = CascadeType.REMOVE" en una relación bidireccional @OneToMany de Categoria a Producto, ¿qué ocurre si eliminamos una Categoría?',
+        options: [
+          'Hibernate lanzará una excepción de integridad referencial si hay productos vinculados.',
+          'Todos los productos asociados a esa Categoría serán eliminados automáticamente de la base de datos.',
+          'Los productos asociados se mantendrán en la base de datos pero su categoria_id pasará a ser null.',
+          'La base de datos se reconfigura para no permitir más borrados.'
+        ],
+        answerIndex: 1,
+        explanation: 'CascadeType.REMOVE propaga la operación de eliminación (DELETE) del objeto padre a sus objetos hijos asociados. Al eliminar la Categoria, Hibernate emitirá sentencias de borrado automáticas para todos sus Productos.'
+      }
+    ]
   }
 }
 
@@ -676,7 +789,8 @@ export function generateStaticParams() {
     { slug: 'prog-web-java' },
     { slug: 'servidor-aplicaciones' },
     { slug: 'java-server-pages' },
-    { slug: 'motor-persistencia' }
+    { slug: 'motor-persistencia' },
+    { slug: 'hibernate-avanzado' }
   ]
 }
 

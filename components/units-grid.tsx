@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowRight, Layers, Settings, Coffee, Server, FileCode, Database } from 'lucide-react'
+import { ArrowRight, Layers, Settings, Coffee, Server, FileCode, Database, Network } from 'lucide-react'
 
 const UNITS = [
   {
@@ -100,6 +100,22 @@ const UNITS = [
       'Mapeo básico: anotaciones y llaves primarias'
     ],
     complexity: 'Hibernate y Bases de Datos',
+  },
+  {
+    id: 'unidad-7',
+    label: 'Unidad VII',
+    title: 'Hibernate Avanzado',
+    icon: Network,
+    href: '/unidades/hibernate-avanzado',
+    color: 'oklch(0.70 0.16 320)',
+    colorDim: 'oklch(0.22 0.08 320)',
+    topics: [
+      'Asociaciones: OneToOne, OneToMany, ManyToOne',
+      'Asociaciones ManyToMany con tablas de unión',
+      'Estrategias de carga: LAZY y EAGER',
+      'Propagación de operaciones: Cascade'
+    ],
+    complexity: 'Hibernate Avanzado',
   }
 ]
 
