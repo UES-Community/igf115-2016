@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Code2, Menu, X, ChevronDown, BookOpen, Layers, Settings, Coffee, Server } from 'lucide-react'
+import { Code2, Menu, X, ChevronDown, BookOpen, Layers, Settings, Coffee, Server, FileCode, Database, Network, Cpu } from 'lucide-react'
 
 const UNITS = [
   {
@@ -37,6 +37,38 @@ const UNITS = [
     icon: Server,
     href: '/unidades/servidor-aplicaciones',
     topics: ['Servidor web vs de aplicaciones', 'Instalación y Configuración', 'Tomcat server.xml', 'Despliegue WAR'],
+  },
+  {
+    id: 'unidad-5',
+    label: 'Unidad V',
+    title: 'Java Server Pages',
+    icon: FileCode,
+    href: '/unidades/java-server-pages',
+    topics: ['Ciclo de vida JSP', 'Scriptlets y Expresiones', 'Directivas y Objetos', 'EL y JSTL'],
+  },
+  {
+    id: 'unidad-6',
+    label: 'Unidad VI',
+    title: 'Motor de Persistencia',
+    icon: Database,
+    href: '/unidades/motor-persistencia',
+    topics: ['Persistencia y ORM', 'Hibernate y JPA', 'Ciclo de vida de entidades', 'Mapeo básico'],
+  },
+  {
+    id: 'unidad-7',
+    label: 'Unidad VII',
+    title: 'Hibernate Avanzado',
+    icon: Network,
+    href: '/unidades/hibernate-avanzado',
+    topics: ['Asociaciones ORM', 'ManyToMany y tablas unión', 'Estrategias LAZY/EAGER', 'Operaciones Cascade'],
+  },
+  {
+    id: 'unidad-8',
+    label: 'Unidad VIII',
+    title: 'Framework Spring',
+    icon: Cpu,
+    href: '/unidades/framework-spring',
+    topics: ['Inversión de Control (IoC)', 'Inyección de Dependencias', 'Scopes de Beans', 'Spring Web MVC'],
   },
 ]
 
