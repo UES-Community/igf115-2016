@@ -1019,7 +1019,9 @@ export default async function UnitPage({ params }: { params: Promise<{ slug: str
               <h2 className="font-display text-sm font-600 text-[var(--igf-ink)] border-b border-[var(--igf-border)] pb-2">
                 Descripción Didáctica
               </h2>
-              <p>{unit.description}</p>
+              {unit.description.split('\n\n').map((paragraph, idx) => (
+                <p key={idx}>{paragraph}</p>
+              ))}
             </div>
 
             {/* Code Block */}
