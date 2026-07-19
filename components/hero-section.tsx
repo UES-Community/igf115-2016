@@ -68,7 +68,7 @@ function tokenize(code: string) {
 }
 
 const STATS = [
-  { value: '4', label: 'Unidades temáticas' },
+  { value: '8', label: 'Unidades temáticas' },
   { value: 'ISO 25010', label: 'Estándar de calidad' },
   { value: 'Tomcat', label: 'Servidor de aplicaciones' },
 ]
