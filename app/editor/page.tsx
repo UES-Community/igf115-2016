@@ -9,249 +9,239 @@ import { Play, RotateCcw, Copy, Check, Terminal, FileCode2 } from 'lucide-react'
 const TEMPLATES = {
   javascript: [
     {
-      name: 'Pila (Stack)',
-      code: `// Implementación de una Pila (Stack) usando un Arreglo
-class Stack {
+      name: 'Patrón MVC (Model-View-Controller)',
+      code: `// Implementación del Patrón MVC (Model-View-Controller)
+class TaskModel {
   constructor() {
-    this.items = [];
+    this.tasks = [];
   }
-
-  // Insertar elemento en la pila
-  push(element) {
-    this.items.push(element);
-    console.log("Push: " + element);
+  addTask(title) {
+    const task = { id: Date.now(), title, completed: false };
+    this.tasks.push(task);
+    console.log(\`[Model] Tarea agregada: "\${title}"\`);
+    return task;
   }
-
-  // Retirar elemento de la pila
-  pop() {
-    if (this.isEmpty()) {
-      console.log("Pila vacía (Underflow)");
-      return null;
-    }
-    const removed = this.items.pop();
-    console.log("Pop: " + removed);
-    return removed;
-  }
-
-  // Ver elemento superior
-  peek() {
-    return this.items[this.items.length - 1];
-  }
-
-  isEmpty() {
-    return this.items.length === 0;
-  }
-
-  print() {
-    console.log("Pila actual: " + this.items.join(" -> "));
+  getTasks() {
+    return this.tasks;
   }
 }
 
-// Ejecución de prueba
-const miPila = new Stack();
-miPila.push(10);
-miPila.push(20);
-miPila.push(30);
-miPila.print();
-console.log("Elemento superior (peek): " + miPila.peek());
-miPila.pop();
-miPila.print();
+class TaskView {
+  render(tasks) {
+    console.log("--- [View] Renderizando lista de tareas ---");
+    tasks.forEach((t, i) => console.log(\`  \${i + 1}. [\${t.completed ? "X" : " "}] \${t.title}\`));
+    console.log("------------------------------------------");
+  }
+}
+
+class TaskController {
+  constructor(model, view) {
+    this.model = model;
+    this.view = view;
+  }
+  handleAddTask(title) {
+    console.log(\`[Controller] Procesando petición para agregar: "\${title}"\`);
+    this.model.addTask(title);
+    this.view.render(this.model.getTasks());
+  }
+}
+
+// Ejecución MVC
+const model = new TaskModel();
+const view = new TaskView();
+const controller = new TaskController(model, view);
+
+controller.handleAddTask("Diseñar arquitectura en capas");
+controller.handleAddTask("Configurar servidor Tomcat");
 `
     },
     {
-      name: 'Cola (Queue)',
-      code: `// Implementación de una Cola (Queue) usando un Arreglo
-class Queue {
+      name: 'Patrón Singleton',
+      code: `// Implementación del Patrón Singleton (Conexión a Base de Datos)
+class DatabaseConnection {
   constructor() {
-    this.items = [];
-  }
-
-  // Insertar elemento al final de la cola
-  enqueue(element) {
-    this.items.push(element);
-    console.log("Enqueue: " + element);
-  }
-
-  // Retirar elemento del inicio de la cola
-  dequeue() {
-    if (this.isEmpty()) {
-      console.log("Cola vacía (Underflow)");
-      return null;
+    if (DatabaseConnection.instance) {
+      console.log("[Singleton] Retornando instancia existente de la base de datos.");
+      return DatabaseConnection.instance;
     }
-    const removed = this.items.shift();
-    console.log("Dequeue: " + removed);
-    return removed;
+    this.connectionString = "jdbc:postgresql://localhost:5432/igf115_db";
+    this.status = "CONNECTED";
+    console.log(\`[Singleton] Nueva conexión establecida a \${this.connectionString}\`);
+    DatabaseConnection.instance = this;
   }
 
-  isEmpty() {
-    return this.items.length === 0;
-  }
-
-  print() {
-    console.log("Cola actual: " + this.items.join(" -> "));
+  query(sql) {
+    console.log(\`[DB Query] Ejecutando SQL: "\${sql}"\`);
   }
 }
 
-// Ejecución de prueba
-const miCola = new Queue();
-miCola.enqueue("Cliente A");
-miCola.enqueue("Cliente B");
-miCola.enqueue("Cliente C");
-miCola.print();
-miCola.dequeue();
-miCola.print();
+// Prueba Singleton
+const db1 = new DatabaseConnection();
+db1.query("SELECT * FROM usuarios");
+
+const db2 = new DatabaseConnection();
+console.log("¿db1 === db2?", db1 === db2);
 `
     },
     {
-      name: 'Recursión (Factorial)',
-      code: `// Función recursiva para calcular el factorial
-function factorial(n) {
-  if (n === 0 || n === 1) {
-    console.log("Caso base alcanzado: n = " + n + " => Retorna 1");
-    return 1;
+      name: 'Patrón Observer',
+      code: `// Implementación del Patrón Observer (Manejador de Eventos)
+class EventManager {
+  constructor() {
+    this.listeners = {};
   }
-  console.log("Llamada recursiva: factorial(" + n + ") = " + n + " * factorial(" + (n - 1) + ")");
-  const res = n * factorial(n - 1);
-  return res;
+  subscribe(eventType, listener) {
+    if (!this.listeners[eventType]) this.listeners[eventType] = [];
+    this.listeners[eventType].push(listener);
+    console.log(\`[Observer] Suscriptor añadido para evento '\${eventType}'\`);
+  }
+  notify(eventType, data) {
+    console.log(\`[Observer] Notificando evento '\${eventType}'...\`);
+    if (this.listeners[eventType]) {
+      this.listeners[eventType].forEach(l => l(data));
+    }
+  }
 }
 
-// Ejecución de prueba
-const numero = 5;
-console.log("Calculando factorial de " + numero + "...");
-const resultado = factorial(numero);
-console.log("El factorial de " + numero + " es: " + resultado);
+const events = new EventManager();
+events.subscribe("user_registered", (user) => console.log(\`  -> EmailService: Enviando correo a \${user.email}\`));
+events.subscribe("user_registered", (user) => console.log(\`  -> AuditLog: Registrado alta de \${user.username}\`));
+
+events.notify("user_registered", { username: "carlos_ues", email: "carlos@ues.edu.sv" });
 `
     }
   ],
   python: [
     {
-      name: 'Pila (Stack)',
-      code: `# Implementación de una Pila en Python
-class Stack:
-    def __init__(self):
-        self.items = []
+      name: 'Patrón Factory Method',
+      code: `# Implementación del Patrón Factory Method en Python
+from abc import ABC, abstractmethod
 
-    def push(self, item):
-        self.items.append(item)
-        print(f"Push: {item}")
+class Notification(ABC):
+    @abstractmethod
+    def send(self, message: str):
+        pass
 
-    def pop(self):
-        if self.is_empty():
-            print("Pila vacía (Underflow)")
-            return None
-        removed = self.items.pop()
-        print(f"Pop: {removed}")
-        return removed
+class EmailNotification(Notification):
+    def send(self, message: str):
+        print(f"[Email] Enviando correo: {message}")
 
-    def peek(self):
-        return self.items[-1] if not self.is_empty() else None
+class SMSNotification(Notification):
+    def send(self, message: str):
+        print(f"[SMS] Enviando mensaje de texto: {message}")
 
-    def is_empty(self):
-        return len(self.items) == 0
+class NotificationFactory:
+    @staticmethod
+    def create_notification(channel: str) -> Notification:
+        if channel == "email":
+            return EmailNotification()
+        elif channel == "sms":
+            return SMSNotification()
+        raise ValueError(f"Canal desconocido: {channel}")
 
-    def __str__(self):
-        return " -> ".join(map(str, self.items))
-
-# Ejecución de prueba
-pila = Stack()
-pila.push(10)
-pila.push(20)
-print("Pila actual:", pila)
-pila.pop()
-print("Pila actual:", pila)
+# Prueba Factory Method
+notifier = NotificationFactory.create_notification("email")
+notifier.send("Bienvenido a la plataforma IGF115")
 `
     },
     {
-      name: 'Búsqueda Binaria',
-      code: `# Algoritmo de Búsqueda Binaria
-def busqueda_binaria(arreglo, objetivo):
-    izquierda = 0
-    derecha = len(arreglo) - 1
+      name: 'Mapeo ORM Entidad',
+      code: `# Simulación de Mapeo de Entidad ORM (Persistencia)
+class StudentEntity:
+    def __init__(self, carnet: str, nombre: str, carrera: str):
+        self.carnet = carnet
+        self.nombre = nombre
+        self.carrera = carrera
+        self._persisted = False
 
-    while izquierda <= derecha:
-        medio = (izquierda + derecha) // 2
-        print(f"Buscando en rango [{izquierda}, {derecha}], Medio: {medio} (Valor: {arreglo[medio]})")
-        
-        if arreglo[medio] == objetivo:
-            return medio
-        elif arreglo[medio] < objetivo:
-            izquierda = medio + 1
-        else:
-            derecha = medio - 1
-            
-    return -1
+    def save(self):
+        # Simulación de sesión Hibernate/JPA
+        self._persisted = True
+        print(f"[ORM Persistence] Entidad '{self.nombre}' guardada con Carnet '{self.carnet}'")
 
-# Arreglo ordenado
-datos = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]
-buscado = 23
-print(f"Buscar {buscado} en {datos}")
-indice = busqueda_binaria(datos, buscado)
-print(f"Elemento encontrado en el índice: {indice}")
+    def __repr__(self):
+        status = "PERSISTED" if self._persisted else "TRANSIENT"
+        return f"<Student {self.carnet}: {self.nombre} [{status}]>"
+
+# Simulación Ciclo de Vida ORM
+estudiante = StudentEntity("EE16001", "Eduardo Escalante", "Ingeniería de Sistemas")
+print("Estado inicial:", estudiante)
+estudiante.save()
+print("Estado final:", estudiante)
 `
     }
   ],
   cpp: [
     {
-      name: 'Pila (Stack) STL',
-      code: `// Implementación de Pila con STL en C++
+      name: 'Patrón Singleton C++',
+      code: `// Implementación del Patrón Singleton en C++
 #include <iostream>
-#include <stack>
+#include <string>
 
-int main() {
-    std::stack<int> pila;
+class ApplicationConfig {
+private:
+    std::string envName;
+    static ApplicationConfig* instance;
 
-    std::cout << "Insertando elementos (Push):" << std::endl;
-    pila.push(10);
-    std::cout << "Push: 10" << std::endl;
-    pila.push(20);
-    std::cout << "Push: 20" << std::endl;
-    pila.push(30);
-    std::cout << "Push: 30" << std::endl;
-
-    std::cout << "\\nElemento superior (top): " << pila.top() << std::endl;
-
-    std::cout << "\\nRetirando elementos (Pop):" << std::endl;
-    while (!pila.empty()) {
-        std::cout << "Pop: " << pila.top() << std::endl;
-        pila.pop();
+    ApplicationConfig() : envName("Production (Tomcat Server)") {
+        std::cout << "[Singleton C++] Configuración inicializada para " << envName << std::endl;
     }
 
+public:
+    static ApplicationConfig* getInstance() {
+        if (instance == nullptr) {
+            instance = new ApplicationConfig();
+        }
+        return instance;
+    }
+
+    std::string getEnv() const { return envName; }
+};
+
+ApplicationConfig* ApplicationConfig::instance = nullptr;
+
+int main() {
+    ApplicationConfig* cfg1 = ApplicationConfig::getInstance();
+    std::cout << "Config 1 Entorno: " << cfg1->getEnv() << std::endl;
+
+    ApplicationConfig* cfg2 = ApplicationConfig::getInstance();
+    std::cout << "Misma instancia: " << (cfg1 == cfg2 ? "SI" : "NO") << std::endl;
     return 0;
 }
 `
     },
     {
-      name: 'Bubble Sort',
-      code: `// Algoritmo de Ordenamiento Burbuja en C++
+      name: 'Patrón Observer C++',
+      code: `// Implementación del Patrón Observer en C++
 #include <iostream>
+#include <vector>
+#include <string>
 
-void bubbleSort(int arr[], int n) {
-    for (int i = 0; i < n-1; i++) {
-        for (int j = 0; j < n-i-1; j++) {
-            if (arr[j] > arr[j+1]) {
-                // Intercambio
-                int temp = arr[j];
-                arr[j] = arr[j+1];
-                arr[j+1] = temp;
-            }
-        }
+class IObserver {
+public:
+    virtual void update(const std::string& message) = 0;
+};
+
+class ConcreteObserver : public IObserver {
+private:
+    std::string name;
+public:
+    ConcreteObserver(std::string n) : name(n) {}
+    void update(const std::string& message) override {
+        std::cout << "[Observer C++] " << name << " recibió notificación: " << message << std::endl;
     }
-}
+};
 
 int main() {
-    int arr[] = {64, 34, 25, 12, 22, 11, 90};
-    int n = sizeof(arr)/sizeof(arr[0]);
-    
-    std::cout << "Arreglo original: ";
-    for (int i=0; i<n; i++) std::cout << arr[i] << " ";
-    std::cout << std::endl;
-    
-    bubbleSort(arr, n);
-    
-    std::cout << "Arreglo ordenado: ";
-    for (int i=0; i<n; i++) std::cout << arr[i] << " ";
-    std::cout << std::endl;
-    
+    ConcreteObserver obs1("ServicioAuditoria");
+    ConcreteObserver obs2("ServicioNotificaciones");
+
+    std::vector<IObserver*> observers = { &obs1, &obs2 };
+    std::string event = "Despliegue exitoso en Tomcat";
+
+    for (auto obs : observers) {
+        obs->update(event);
+    }
     return 0;
 }
 `
@@ -374,7 +364,7 @@ export default function EditorPage() {
             </h1>
           </div>
           <p className="text-sm text-[var(--igf-muted)] max-w-md">
-            Escribe, modifica y prueba implementaciones de estructuras de datos. JavaScript se ejecuta en tiempo real en tu navegador.
+            Escribe, modifica y prueba patrones de diseño y conceptos de Ingeniería del Software. JavaScript se ejecuta en tiempo real en tu navegador.
           </p>
         </div>
 
@@ -432,7 +422,7 @@ export default function EditorPage() {
                 Consejo
               </span>
               <p>
-                Puedes usar el editor para resolver las guías de laboratorio. Intenta modificar el código base de la pila para añadir un método `size()` o un método `clear()`.
+                Puedes usar el editor para experimentar con patrones y principios de arquitectura. Intenta modificar la plantilla de Patrones de Diseño o la simulación MVC para añadir nuevos eventos o métodos.
               </p>
             </div>
           </div>
