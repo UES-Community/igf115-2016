@@ -7,6 +7,10 @@ const LINKS = {
     { label: 'Arquitectura del Software', href: '/unidades/arquitectura' },
     { label: 'Programación Web en Java', href: '/unidades/prog-web-java' },
     { label: 'Servidor de Aplicaciones', href: '/unidades/servidor-aplicaciones' },
+    { label: 'Java Server Pages', href: '/unidades/java-server-pages' },
+    { label: 'Motor de Persistencia', href: '/unidades/motor-persistencia' },
+    { label: 'Hibernate Avanzado', href: '/unidades/hibernate-avanzado' },
+    { label: 'Framework Spring', href: '/unidades/framework-spring' },
   ],
   herramientas: [
     { label: 'Editor de Código', href: '/editor' },
